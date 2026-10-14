@@ -25,19 +25,16 @@ mom:Geoprocessing a owl:Class ;
 mom:WatershedCellAttribution a owl:Class ;
     rdfs:subClassOf mom:Geoprocessing ;
     rdfs:label "Per-watershed cell attribution" ;
-    skos:notation "MOM-A01" ;
     rdfs:comment "Assigns grid cells to watersheds once, for reuse in aggregation." .
 
 mom:PerWatershedAggregation a owl:Class ;
     rdfs:subClassOf mom:Geoprocessing ;
     rdfs:label "Per-watershed aggregation" ;
-    skos:notation "MOM-A02" ;
     rdfs:comment "Aggregates a gridded source per watershed, skipping nodata cells." .
 
 mom:HazardScoreAccumulation a owl:Class ;
     rdfs:subClassOf mom:Geoprocessing ;
     rdfs:label "Hazard score accumulation" ;
-    skos:notation "MOM-A03" ;
     rdfs:comment "Updates flood duration and combines GloFAS and GFMS scores into a hazard score and alert per watershed." .
 
 # Entities
@@ -69,10 +66,9 @@ mom:dataTime a owl:DatatypeProperty ;
     rdfs:comment "Time the data values refer to." ;
     rdfs:range xsd:dateTime .
 
-# Alert levels: hazard score strictly between the bounds
+# Alert levels: minimum hazard score per level
 
-mom:hazardScoreAbove a owl:DatatypeProperty ; rdfs:label "hazard score above" ; rdfs:range xsd:decimal .
-mom:hazardScoreBelow a owl:DatatypeProperty ; rdfs:label "hazard score below" ; rdfs:range xsd:decimal .
+mom:minHazardScore a owl:DatatypeProperty ; rdfs:label "minimum hazard score" ; rdfs:range xsd:decimal .
 
 mom:AlertLevels a skos:ConceptScheme ;
     rdfs:label "MoM alert levels" ;
@@ -80,13 +76,13 @@ mom:AlertLevels a skos:ConceptScheme ;
     rdfs:comment "Alert levels of hazard score accumulation." .
 
 mom:Warning a skos:Concept ; skos:inScheme mom:AlertLevels ; skos:prefLabel "Warning" ;
-    mom:hazardScoreAbove 80 .
+    mom:minHazardScore 80 .
 
 mom:Watch a skos:Concept ; skos:inScheme mom:AlertLevels ; skos:prefLabel "Watch" ;
-    mom:hazardScoreAbove 60 ; mom:hazardScoreBelow 80 .
+    mom:minHazardScore 60 .
 
 mom:Advisory a skos:Concept ; skos:inScheme mom:AlertLevels ; skos:prefLabel "Advisory" ;
-    mom:hazardScoreAbove 35 ; mom:hazardScoreBelow 60 .
+    mom:minHazardScore 35 .
 
 mom:Information a skos:Concept ; skos:inScheme mom:AlertLevels ; skos:prefLabel "Information" ;
-    mom:hazardScoreAbove 0 ; mom:hazardScoreBelow 35 .
+    mom:minHazardScore 0 .

@@ -51,8 +51,8 @@
     "entityType": "prov:Entity",
     "name": "GFMS Flood_byStor grid",
     "mom:dataType": "GFMS",
-    "dcterms:format": "GDAL VRT",
-    "mom:gridSignature": "[2880, 800, 0.125, 0.0, -180.0, 0.0, -0.125, 50.0]",
+    "dcterms:format": "GFMS Flood_byStor binary grid (float32)",
+    "mom:gridSignature": "[1440, 400, 0.25, 0.0, -180.0, 0.0, -0.25, 50.0]",
     "dcterms:hasVersion": "0.0.1-alpha",
     "dcterms:isPartOf": "run:mom"
   },

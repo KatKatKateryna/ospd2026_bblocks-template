@@ -10,12 +10,6 @@ Provenance of three activities of the RSS-Hydro Model of Models (MoM) flood work
 
 Each activity is `dcterms:isPartOf` one `mom:WorkflowRun` activity.
 
-Cell attribution runs only when the lookup is missing or outdated; otherwise the lookup
-points to the earlier run that built it. The lookup derives from the versioned watershed
-shapefile (`mom:watershedFingerprint`) and the GFMS grid (`mom:gridSignature`), which ties each
-aggregate to the grid and watersheds it was clipped with. Parameters and static tables ship
-with the software version (`dcterms:hasVersion`, `dcterms:isPartOf`).
+Cell attribution runs only when the lookup is missing or outdated; otherwise the lookup points to the earlier run that built it. The lookup derives from the versioned watershed shapefile (`mom:watershedFingerprint`) and the GFMS grid (`mom:gridSignature`), which ties each aggregate to the grid and watersheds it was clipped with; the grid must match the GFMS data. Parameters and static tables ship with the software version (`dcterms:hasVersion`, `dcterms:isPartOf`).
 
-GFMS and GloFAS files state `mom:dataType`, `dcterms:format`, `mom:dataTime` (time the values
-refer to) and `generatedAtTime` (time the file was produced). `rules.shacl` enforces this and
-the links between the activities.
+GFMS and GloFAS files state `mom:dataType`, `dcterms:format`, `mom:dataTime` (time the values refer to) and `generatedAtTime` (time the file was produced). The schema enforces this; `rules.shacl` checks the links between activities.
