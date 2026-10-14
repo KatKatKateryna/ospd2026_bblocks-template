@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "A MoM activity is a processing activity of one of the MoM activity types.",
+  "allOf": [
+    {
+      "$ref": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/processing-activity/schema.json"
+    },
+    {
+      "$ref": "#/$defs/isMomActivity"
+    }
+  ],
+  "$defs": {
+    "isMomActivity": {
+      "required": [
+        "activityType"
+      ],
+      "properties": {
+        "activityType": {
+          "enum": [
+            "mom:WatershedCellAttribution",
+            "mom:PerWatershedAggregation",
+            "mom:HazardScoreAccumulation"
+          ]
+        }
+      }
+    }
+  },
+  "x-jsonld-prefixes": {
+    "mom": "https://rss-hydro.lu/ns/mom/",
+    "dcterms": "http://purl.org/dc/terms/"
+  }
+}

@@ -1550,7 +1550,7 @@ items:
       $ref: '#/$defs/isProcessingActivity'
     then:
       allOf:
-      - $ref: https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/processing-activity/schema.yaml
+      - $ref: https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/ontology/activities/schema.yaml
       - required:
         - dcterms:isPartOf
   - if:
@@ -1595,14 +1595,7 @@ items:
         - mom:dataTime
 $defs:
   isProcessingActivity:
-    required:
-    - activityType
-    properties:
-      activityType:
-        enum:
-        - mom:WatershedCellAttribution
-        - mom:PerWatershedAggregation
-        - mom:HazardScoreAccumulation
+    $ref: https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/ontology/activities/schema.yaml#/$defs/isMomActivity
   isCellLookup:
     required:
     - entityType

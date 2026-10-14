@@ -9,6 +9,7 @@
   "itemClass": "model",
   "register": "ogc-incubator",
   "dependsOn": [
+    "lu.rss-hydro.mom.processing-activity",
     "ogc.ogc-utils.prov"
   ],
   "version": "0.1",
@@ -25,12 +26,47 @@
       "https://ogcincubator.github.io/cross-domain-model/_sources/prov/shapes.shacl"
     ]
   },
+  "ldContext": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/ontology/activities/context.jsonld",
   "ontology": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/ontology/activities/ontology.ttl",
   "dateOfLastChange": "2026-10-14",
+  "schema": {
+    "application/yaml": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/ontology/activities/schema.yaml",
+    "application/json": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/ontology/activities/schema.json"
+  },
+  "sourceSchema": "https://katkatkateryna.github.io/ospd2026_bblocks-template/_sources/ontology/activities/schema.yaml",
+  "sourceLdContext": "https://katkatkateryna.github.io/ospd2026_bblocks-template/_sources/ontology/activities/context.jsonld",
+  "resolvedSchemaProperties": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/ontology/activities/resolvedProperties.json",
   "sourceFiles": "https://katkatkateryna.github.io/ospd2026_bblocks-template/_sources/ontology/activities/",
   "validationPassed": true,
-  "description": "## MoM workflow activity types\n\nActivity types of the MoM flood workflow (subclasses of `mom:Geoprocessing`, itself a `prov:Activity`), candidate entries for the OSPD process-type register, plus the entity type, properties, workflow run type (`mom:WorkflowRun`) and alert levels (`mom:AlertLevels`) the MoM profile uses.\n\n| Term | Generic operation |\n|---|---|\n| `mom:WatershedCellAttribution` | zonal masking (grid cells to zones) |\n| `mom:PerWatershedAggregation` | zonal statistics |\n| `mom:HazardScoreAccumulation` | index composition and classification |\n",
-  "annotatedSchema": null,
+  "testOutputs": "https://github.com/KatKatKateryna/ospd2026_bblocks-template/blob/master/build/tests/rss-hydro/mom/ontology/activities/",
+  "description": "## MoM workflow activity types\n\nActivity types of the MoM flood workflow (subclasses of `mom:Geoprocessing`, itself a `prov:Activity`), candidate entries for the OSPD process-type register, plus the entity type, properties, workflow run type (`mom:WorkflowRun`) and alert levels (`mom:AlertLevels`) the MoM profile uses.\n\n| Term | Generic operation |\n|---|---|\n| `mom:WatershedCellAttribution` | zonal masking (grid cells to zones) |\n| `mom:PerWatershedAggregation` | zonal statistics |\n| `mom:HazardScoreAccumulation` | index composition and classification |\n\nThe schema checks that a record of one of these types is a valid processing activity (`lu.rss-hydro.mom.processing-activity`).\n",
+  "examples": [
+    {
+      "title": "Standalone per-watershed aggregation",
+      "content": "One MoM activity, validated without a workflow. All values are illustrative.",
+      "snippets": [
+        {
+          "language": "json",
+          "url": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/tests/rss-hydro/mom/ontology/activities/example_1_1.json",
+          "sizeBytes": 445,
+          "code": "{\n  \"id\": \"https://example.org/mom/run/2026030200/aggregation\",\n  \"activityType\": \"mom:PerWatershedAggregation\",\n  \"name\": \"GFMS per-watershed aggregation\",\n  \"startedAtTime\": \"2026-03-02T01:05:33Z\",\n  \"endedAtTime\": \"2026-03-02T01:05:41Z\",\n  \"used\": \"https://example.org/mom/run/2026030200/gfms-bin\",\n  \"generated\": \"https://example.org/mom/run/2026030200/gfms-aggregates\",\n  \"wasAssociatedWith\": \"https://example.org/mom/run/2026030200/mom\"\n}\n"
+        },
+        {
+          "language": "jsonld",
+          "url": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/tests/rss-hydro/mom/ontology/activities/example_1_1.jsonld",
+          "sizeBytes": 585,
+          "code": "{\n  \"@context\": \"https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/ontology/activities/context.jsonld\",\n  \"id\": \"https://example.org/mom/run/2026030200/aggregation\",\n  \"activityType\": \"mom:PerWatershedAggregation\",\n  \"name\": \"GFMS per-watershed aggregation\",\n  \"startedAtTime\": \"2026-03-02T01:05:33Z\",\n  \"endedAtTime\": \"2026-03-02T01:05:41Z\",\n  \"used\": \"https://example.org/mom/run/2026030200/gfms-bin\",\n  \"generated\": \"https://example.org/mom/run/2026030200/gfms-aggregates\",\n  \"wasAssociatedWith\": \"https://example.org/mom/run/2026030200/mom\"\n}"
+        },
+        {
+          "language": "ttl",
+          "url": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/tests/rss-hydro/mom/ontology/activities/example_1_1.ttl",
+          "sizeBytes": 685,
+          "code": "@prefix mom: <https://rss-hydro.lu/ns/mom/> .\n@prefix prov: <http://www.w3.org/ns/prov#> .\n@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n\n<https://example.org/mom/run/2026030200/aggregation> a mom:PerWatershedAggregation ;\n    rdfs:label \"GFMS per-watershed aggregation\" ;\n    prov:endedAtTime \"2026-03-02T01:05:41+00:00\"^^xsd:dateTime ;\n    prov:generated <https://example.org/mom/run/2026030200/gfms-aggregates> ;\n    prov:startedAtTime \"2026-03-02T01:05:33+00:00\"^^xsd:dateTime ;\n    prov:used <https://example.org/mom/run/2026030200/gfms-bin> ;\n    prov:wasAssociatedWith <https://example.org/mom/run/2026030200/mom> .\n\n"
+        }
+      ]
+    }
+  ],
+  "annotatedSchema": "$schema: https://json-schema.org/draft/2020-12/schema\ndescription: A MoM activity is a processing activity of one of the MoM activity types.\nallOf:\n- $ref: https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/processing-activity/schema.yaml\n- $ref: '#/$defs/isMomActivity'\n$defs:\n  isMomActivity:\n    required:\n    - activityType\n    properties:\n      activityType:\n        enum:\n        - mom:WatershedCellAttribution\n        - mom:PerWatershedAggregation\n        - mom:HazardScoreAccumulation\nx-jsonld-prefixes:\n  mom: https://rss-hydro.lu/ns/mom/\n  dcterms: http://purl.org/dc/terms/\n",
   "gitRepository": "https://github.com/KatKatKateryna/ospd2026_bblocks-template",
   "gitPath": "_sources/ontology/activities"
 }

@@ -115,5 +115,5 @@ path	@id	schema
 /_anyOf/0/_oneOf/0/qualifiedAttribution/_oneOf/1/agent	http://www.w3.org/ns/prov#agent	https://ogcincubator.github.io/bblock-prov-schema/build/annotated/ogc-utils/prov-activity/schema.yaml
 /_then/used		https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/processing-activity/schema.yaml
 /_then/wasAssociatedWith		https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/processing-activity/schema.yaml
+/_then/activityType		https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/ontology/activities/schema.yaml
 /_then/_anyOf/1/entityType		/github/workspace/build/annotated/rss-hydro/mom/workflow/model-of-models/schema.yaml
-/activityType		/github/workspace/build/annotated/rss-hydro/mom/workflow/model-of-models/schema.yaml

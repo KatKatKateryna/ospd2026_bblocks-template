@@ -19,7 +19,7 @@
         "then": {
           "allOf": [
             {
-              "$ref": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/processing-activity/schema.json"
+              "$ref": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/ontology/activities/schema.json"
             },
             {
               "required": [
@@ -108,18 +108,7 @@
   },
   "$defs": {
     "isProcessingActivity": {
-      "required": [
-        "activityType"
-      ],
-      "properties": {
-        "activityType": {
-          "enum": [
-            "mom:WatershedCellAttribution",
-            "mom:PerWatershedAggregation",
-            "mom:HazardScoreAccumulation"
-          ]
-        }
-      }
+      "$ref": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/ontology/activities/schema.json#/$defs/isMomActivity"
     },
     "isCellLookup": {
       "required": [
