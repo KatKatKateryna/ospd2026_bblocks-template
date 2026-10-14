@@ -1,18 +1,19 @@
 # A short, descriptive name of this building block collection
-name: My OGC Building Blocks repository
+name: RSS-Hydro Model of Models Building Blocks
 
 # Short abstract for this collection (optional)
 abstract: |
-  This is an example text for the abstract. It should be short and to the point.
-  A "Tell me more" link will appear if there is an additional description with a longer explanation.
+  Provenance building blocks for the RSS-Hydro Model of Models (MoM) flood prediction workflow,
+  profiled for the OGC Open Science Persistent Demonstrator (OSPD) 2026.
 
 # Description for this collection (optional)
 description: |
-  The description can be longer. Both **the abstract** *and the description* support Markdown,
-  including [links](https://google.es).
+  W3C PROV profile and activity vocabulary for a minimal slice of the MoM workflow:
+  GFMS per-watershed cell attribution, GFMS per-watershed aggregation, and GloFAS + GFMS
+  hazard score accumulation.
 
 # Customize the following prefix (will be prepended to the path of the building blocks):
-identifier-prefix: ogc.bbr.template.
+identifier-prefix: lu.rss-hydro.mom.
 
 # List of imports ("default" is an alias for the main OGC Building Blocks Register).
 # An entry can also be an "@org/register" alias (e.g. "@ogc/main", equivalent to "default"),
@@ -20,6 +21,7 @@ identifier-prefix: ogc.bbr.template.
 # a full register.json URL.
 imports:
   - default
+  - https://ogcincubator.github.io/bblock-prov-schema/build/register.json
 
 # Meta-registry used to resolve "@org/register" import aliases above (optional).
 # Defaults to the postprocessor's built-in meta-registry if omitted; set to null to disable

@@ -1,0 +1,63 @@
+@prefix mom:     <https://rss-hydro.lu/ns/mom/> .
+@prefix prov:    <http://www.w3.org/ns/prov#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix sh:      <http://www.w3.org/ns/shacl#> .
+@base <https://rss-hydro.lu/ns/mom/rules/> .
+
+<#aggregationUsedCellLookup>
+    a sh:NodeShape ;
+    sh:targetClass mom:PerWatershedAggregation ;
+    sh:message "A per-watershed aggregation must use a watershed cell lookup" ;
+    sh:property [
+        sh:path prov:used ;
+        sh:qualifiedValueShape [ sh:class mom:WatershedCellLookup ] ;
+        sh:qualifiedMinCount 1 ;
+    ] .
+
+<#cellLookupStatesItsInputs>
+    a sh:NodeShape ;
+    sh:targetClass mom:WatershedCellLookup ;
+    sh:message "A watershed cell lookup must state its watershed fingerprint, creation time, the activity that generated it (which may belong to an earlier run) and the grid it was derived from" ;
+    sh:property [ sh:path mom:watershedFingerprint ; sh:minCount 1 ] ;
+    sh:property [ sh:path prov:generatedAtTime ; sh:minCount 1 ] ;
+    sh:property [ sh:path prov:wasGeneratedBy ; sh:minCount 1 ] ;
+    sh:property [
+        sh:path prov:wasDerivedFrom ;
+        sh:qualifiedValueShape [ sh:property [ sh:path mom:gridSignature ; sh:minCount 1 ] ] ;
+        sh:qualifiedMinCount 1 ;
+    ] .
+
+<#hazardAccumulationUsedAggregate>
+    a sh:NodeShape ;
+    sh:targetClass mom:HazardScoreAccumulation ;
+    sh:message "A hazard score accumulation must use an output of a per-watershed aggregation" ;
+    sh:property [
+        sh:path prov:used ;
+        sh:qualifiedValueShape [
+            sh:property [ sh:path prov:wasGeneratedBy ; sh:class mom:PerWatershedAggregation ; sh:minCount 1 ]
+        ] ;
+        sh:qualifiedMinCount 1 ;
+    ] .
+
+<#stepInputsHaveCreationTime>
+    a sh:NodeShape ;
+    sh:targetObjectsOf prov:used ;
+    sh:message "Every input of a step must state when it was produced, or the version it is part of" ;
+    sh:or (
+        [ sh:path prov:generatedAtTime ; sh:minCount 1 ]
+        [ sh:path dcterms:hasVersion ; sh:minCount 1 ]
+    ) .
+
+<#sourceDataDescribed>
+    a sh:NodeShape ;
+    sh:targetSubjectsOf mom:dataType ;
+    sh:message "GFMS / GloFAS data must state its format, and either the software version it ships with or when it was produced and the time its values refer to" ;
+    sh:property [ sh:path dcterms:format ; sh:minCount 1 ] ;
+    sh:or (
+        [ sh:path dcterms:hasVersion ; sh:minCount 1 ]
+        [ sh:class mom:WatershedCellLookup ]
+        [ sh:and (
+            [ sh:path prov:generatedAtTime ; sh:minCount 1 ]
+            [ sh:path mom:dataTime ; sh:minCount 1 ]
+        ) ]
+    ) .

@@ -1,0 +1,16 @@
+$schema: https://raw.githubusercontent.com/opengeospatial/bblocks-postprocess/refs/heads/master/ogc/bblocks/schemas/examples.schema.yaml
+examples:
+- title: Resampling a raster
+  snippets:
+    - language: json
+      code: |
+        {
+          "id": "https://example.org/runs/42/resample",
+          "activityType": "prov:Activity",
+          "name": "Resample elevation raster to 0.0625 degrees",
+          "startedAtTime": "2026-03-02T01:00:00Z",
+          "endedAtTime": "2026-03-02T01:00:07Z",
+          "used": "https://example.org/data/elevation.tif",
+          "generated": "https://example.org/data/elevation_0.0625.tif",
+          "wasAssociatedWith": "https://example.org/agents/gdal-warp"
+        }

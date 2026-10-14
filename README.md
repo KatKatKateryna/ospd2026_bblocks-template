@@ -1,17 +1,15 @@
-# OGC Building Block template
+# RSS-Hydro Model of Models Building Blocks
 
-This template provides a working example of an [OGC Building Block](https:blocks.ogc.org). For more info see [the Documentation](https://ogcincubator.github.io/bblocks-docs/).
+OGC Building Blocks for the provenance of the RSS-Hydro Model of Models (MoM) flood
+workflow, profiled for the OGC Open Science Persistent Demonstrator (OSPD) 2026.
 
-This template is a working automation recipe to define, test and document a set of Building Blocks.
+Identifier prefix: `lu.rss-hydro.mom.`
 
-The automation-generated documentation for this example is here: [https://opengeospatial.github.io/bblock-template/](https://opengeospatial.github.io/bblock-template/)
+| Building block | Identifier | OSPD activity |
+|---|---|---|
+| Processing step provenance (generic) | `lu.rss-hydro.mom.processing-step` | 1 |
+| MoM GFMS + GloFAS hazard score workflow | `lu.rss-hydro.mom.workflow.gfms-glofas-hazard` | 2 |
+| MoM workflow activity types (candidate process types) | `lu.rss-hydro.mom.ontology.activities` | 4 |
 
-[Examples of using this with typical applications of OGC standards](https://github.com/ogcincubator/bblocks-examples)
-
-Please replace the contents of this README with information about your Building Block(s).
-
-# How to use this template
-
-[More information on design and usage](https://github.com/opengeospatial/bblock-template/blob/master/USAGE.md)
-
-
+Built with the [OGC Building Block template](https://github.com/opengeospatial/bblock-template);
+see [USAGE.md](USAGE.md) for how the repository is processed.
