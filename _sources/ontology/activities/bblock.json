@@ -6,6 +6,7 @@
   "itemClass": "model",
   "register": "ogc-incubator",
   "dependsOn": [
+    "lu.rss-hydro.mom.processing-activity",
     "ogc.ogc-utils.prov"
   ],
   "version": "0.1",

@@ -13,7 +13,7 @@ items:
         $ref: '#/$defs/isProcessingActivity'
       then:
         allOf:
-          - $ref: bblocks://lu.rss-hydro.mom.processing-activity
+          - $ref: bblocks://lu.rss-hydro.mom.ontology.activities
           - required: [dcterms:isPartOf]
     - if:
         required: [activityType]
@@ -41,10 +41,7 @@ items:
           - required: [generatedAtTime, mom:dataTime]
 $defs:
   isProcessingActivity:
-    required: [activityType]
-    properties:
-      activityType:
-        enum: [mom:WatershedCellAttribution, mom:PerWatershedAggregation, mom:HazardScoreAccumulation]
+    $ref: bblocks://lu.rss-hydro.mom.ontology.activities#/$defs/isMomActivity
   isCellLookup:
     required: [entityType]
     properties:
