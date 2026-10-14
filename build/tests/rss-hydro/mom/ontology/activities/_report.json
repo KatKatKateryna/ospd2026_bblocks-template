@@ -1,0 +1,14 @@
+{
+  "title": "Validation report for lu.rss-hydro.mom.ontology.activities - MoM workflow activity types",
+  "bblockName": "MoM workflow activity types",
+  "bblockId": "lu.rss-hydro.mom.ontology.activities",
+  "generated": "2026-10-14T14:22:17.991593+00:00",
+  "result": true,
+  "items": [],
+  "globalErrors": {},
+  "counts": {
+    "total": 0,
+    "passed": 0,
+    "failed": 0
+  }
+}

@@ -1,0 +1,101 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix mom: <https://rss-hydro.lu/ns/mom/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+mom: a owl:Ontology ;
+    rdfs:label "Model of Models flood workflow activities" ;
+    owl:versionInfo "0.1" .
+
+mom:Advisory a skos:Concept ;
+    skos:inScheme mom:AlertLevels ;
+    skos:prefLabel "Advisory" ;
+    mom:hazardScoreAbove 35 ;
+    mom:hazardScoreBelow 60 .
+
+mom:HazardScoreAccumulation a owl:Class ;
+    rdfs:label "Hazard score accumulation" ;
+    rdfs:comment "Updates flood duration and combines GloFAS and GFMS scores into a hazard score and alert per watershed." ;
+    rdfs:subClassOf mom:Geoprocessing ;
+    skos:notation "MOM-A03" .
+
+mom:Information a skos:Concept ;
+    skos:inScheme mom:AlertLevels ;
+    skos:prefLabel "Information" ;
+    mom:hazardScoreAbove 0 ;
+    mom:hazardScoreBelow 35 .
+
+mom:PerWatershedAggregation a owl:Class ;
+    rdfs:label "Per-watershed aggregation" ;
+    rdfs:comment "Aggregates a gridded source per watershed, skipping nodata cells." ;
+    rdfs:subClassOf mom:Geoprocessing ;
+    skos:notation "MOM-A02" .
+
+mom:Warning a skos:Concept ;
+    skos:inScheme mom:AlertLevels ;
+    skos:prefLabel "Warning" ;
+    mom:hazardScoreAbove 80 .
+
+mom:Watch a skos:Concept ;
+    skos:inScheme mom:AlertLevels ;
+    skos:prefLabel "Watch" ;
+    mom:hazardScoreAbove 60 ;
+    mom:hazardScoreBelow 80 .
+
+mom:WatershedCellAttribution a owl:Class ;
+    rdfs:label "Per-watershed cell attribution" ;
+    rdfs:comment "Assigns grid cells to watersheds once, for reuse in aggregation." ;
+    rdfs:subClassOf mom:Geoprocessing ;
+    skos:notation "MOM-A01" .
+
+mom:WatershedCellLookup a owl:Class ;
+    rdfs:label "Watershed cell lookup" ;
+    rdfs:comment "Grid cells and cell areas per watershed for one data source grid." ;
+    rdfs:subClassOf prov:Entity .
+
+mom:WorkflowRun a owl:Class ;
+    rdfs:label "Workflow run" ;
+    rdfs:comment "One execution of the MoM workflow." ;
+    rdfs:subClassOf prov:Activity .
+
+mom:dataTime a owl:DatatypeProperty ;
+    rdfs:label "data time" ;
+    rdfs:comment "Time the data values refer to." ;
+    rdfs:range xsd:dateTime .
+
+mom:dataType a owl:DatatypeProperty ;
+    rdfs:label "data type" ;
+    rdfs:comment "Source data type, e.g. GFMS, GloFAS." ;
+    rdfs:range xsd:string .
+
+mom:gridSignature a owl:DatatypeProperty ;
+    rdfs:label "grid signature" ;
+    rdfs:comment "Grid width, height and affine transform." ;
+    rdfs:range xsd:string .
+
+mom:hazardScoreAbove a owl:DatatypeProperty ;
+    rdfs:label "hazard score above" ;
+    rdfs:range xsd:decimal .
+
+mom:hazardScoreBelow a owl:DatatypeProperty ;
+    rdfs:label "hazard score below" ;
+    rdfs:range xsd:decimal .
+
+mom:watershedFingerprint a owl:DatatypeProperty ;
+    rdfs:label "watershed fingerprint" ;
+    rdfs:comment "sha256 of the watershed shapefile (.shp, .dbf)." ;
+    rdfs:range xsd:string .
+
+mom:Geoprocessing a owl:Class ;
+    rdfs:label "Geoprocessing" ;
+    rdfs:comment "Parent of all MoM activity types." ;
+    rdfs:subClassOf prov:Activity .
+
+mom:AlertLevels a skos:ConceptScheme ;
+    rdfs:label "MoM alert levels" ;
+    dcterms:hasVersion "0.0.1-alpha" ;
+    rdfs:comment "Alert levels of hazard score accumulation." .
+

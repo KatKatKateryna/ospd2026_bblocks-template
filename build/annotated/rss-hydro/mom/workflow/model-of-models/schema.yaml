@@ -1,0 +1,22 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+description: Provenance chain of one MoM GFMS + GloFAS run. Per-watershed aggregation
+  and hazard score accumulation are always present; cell attribution only when the
+  cell lookup is (re)built in the same run.
+allOf:
+- $ref: https://ogcincubator.github.io/bblock-prov-schema/build/annotated/ogc-utils/prov/schema.yaml
+contains:
+  $ref: https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/processing-activity/schema.yaml
+minContains: 2
+x-jsonld-extra-terms:
+  mom:dataTime:
+    x-jsonld-type: http://www.w3.org/2001/XMLSchema#dateTime
+  dcat:downloadURL:
+    x-jsonld-type: '@id'
+  dcterms:isPartOf:
+    x-jsonld-type: '@id'
+x-jsonld-prefixes:
+  xsd: http://www.w3.org/2001/XMLSchema#
+  mom: https://rss-hydro.lu/ns/mom/
+  run: https://example.org/mom/run/2026030200/
+  dcat: http://www.w3.org/ns/dcat#
+  dcterms: http://purl.org/dc/terms/

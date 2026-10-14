@@ -1,0 +1,66 @@
+
+
+{
+  "itemIdentifier": "lu.rss-hydro.mom.processing-activity",
+  "name": "Processing activity provenance",
+  "abstract": "Generic W3C PROV profile of one geospatial processing activity.",
+  "status": "under-development",
+  "dateTimeAddition": "2026-10-14T00:00:00Z",
+  "itemClass": "schema",
+  "register": "ogc-incubator",
+  "dependsOn": [
+    "ogc.ogc-utils.prov-activity"
+  ],
+  "version": "0.1",
+  "scope": "dev",
+  "tags": [
+    "ospd",
+    "prov",
+    "processing activity"
+  ],
+  "shaclShapes": {
+    "ogc.model.cross-domain.prov": [
+      "https://ogcincubator.github.io/cross-domain-model/_sources/prov/shapes.shacl"
+    ]
+  },
+  "dateOfLastChange": "2026-10-14",
+  "schema": {
+    "application/yaml": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/processing-activity/schema.yaml",
+    "application/json": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/processing-activity/schema.json"
+  },
+  "sourceSchema": "https://katkatkateryna.github.io/ospd2026_bblocks-template/_sources/processing-activity/schema.yaml",
+  "ldContext": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/processing-activity/context.jsonld",
+  "resolvedSchemaProperties": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/processing-activity/resolvedProperties.json",
+  "sourceFiles": "https://katkatkateryna.github.io/ospd2026_bblocks-template/_sources/processing-activity/",
+  "validationPassed": true,
+  "testOutputs": "https://github.com/KatKatKateryna/ospd2026_bblocks-template/blob/master/build/tests/rss-hydro/mom/processing-activity/",
+  "description": "## Processing activity provenance\n\nProfile of `ogc.ogc-utils.prov-activity`. Requires `activityType`, `startedAtTime`,\n`endedAtTime`, `used`, `generated` and `wasAssociatedWith`.\n",
+  "examples": [
+    {
+      "title": "Resampling a raster",
+      "snippets": [
+        {
+          "language": "json",
+          "url": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/tests/rss-hydro/mom/processing-activity/example_1_1.json",
+          "sizeBytes": 406,
+          "code": "{\n  \"id\": \"https://example.org/runs/42/resample\",\n  \"activityType\": \"prov:Activity\",\n  \"name\": \"Resample elevation raster to 0.0625 degrees\",\n  \"startedAtTime\": \"2026-03-02T01:00:00Z\",\n  \"endedAtTime\": \"2026-03-02T01:00:07Z\",\n  \"used\": \"https://example.org/data/elevation.tif\",\n  \"generated\": \"https://example.org/data/elevation_0.0625.tif\",\n  \"wasAssociatedWith\": \"https://example.org/agents/gdal-warp\"\n}\n"
+        },
+        {
+          "language": "jsonld",
+          "url": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/tests/rss-hydro/mom/processing-activity/example_1_1.jsonld",
+          "sizeBytes": 546,
+          "code": "{\n  \"@context\": \"https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/processing-activity/context.jsonld\",\n  \"id\": \"https://example.org/runs/42/resample\",\n  \"activityType\": \"prov:Activity\",\n  \"name\": \"Resample elevation raster to 0.0625 degrees\",\n  \"startedAtTime\": \"2026-03-02T01:00:00Z\",\n  \"endedAtTime\": \"2026-03-02T01:00:07Z\",\n  \"used\": \"https://example.org/data/elevation.tif\",\n  \"generated\": \"https://example.org/data/elevation_0.0625.tif\",\n  \"wasAssociatedWith\": \"https://example.org/agents/gdal-warp\"\n}"
+        },
+        {
+          "language": "ttl",
+          "url": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/tests/rss-hydro/mom/processing-activity/example_1_1.ttl",
+          "sizeBytes": 600,
+          "code": "@prefix prov: <http://www.w3.org/ns/prov#> .\n@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n\n<https://example.org/runs/42/resample> a prov:Activity ;\n    rdfs:label \"Resample elevation raster to 0.0625 degrees\" ;\n    prov:endedAtTime \"2026-03-02T01:00:07+00:00\"^^xsd:dateTime ;\n    prov:generated <https://example.org/data/elevation_0.0625.tif> ;\n    prov:startedAtTime \"2026-03-02T01:00:00+00:00\"^^xsd:dateTime ;\n    prov:used <https://example.org/data/elevation.tif> ;\n    prov:wasAssociatedWith <https://example.org/agents/gdal-warp> .\n\n"
+        }
+      ]
+    }
+  ],
+  "annotatedSchema": "$schema: https://json-schema.org/draft/2020-12/schema\ndescription: One processing activity with its required PROV fields.\nallOf:\n- $ref: https://ogcincubator.github.io/bblock-prov-schema/build/annotated/ogc-utils/prov-activity/schema.yaml\nrequired:\n- id\n- activityType\n- startedAtTime\n- endedAtTime\n- used\n- generated\n- wasAssociatedWith\n",
+  "gitRepository": "https://github.com/KatKatKateryna/ospd2026_bblocks-template",
+  "gitPath": "_sources/processing-activity"
+}
