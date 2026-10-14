@@ -1,0 +1,10 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+description: >-
+  Provenance chain of one MoM GFMS + GloFAS run. Per-watershed aggregation and hazard score
+  accumulation are always present; cell attribution only when the cell lookup is (re)built
+  in the same run.
+allOf:
+  - $ref: bblocks://ogc.ogc-utils.prov
+contains:
+  $ref: bblocks://lu.rss-hydro.mom.processing-activity
+minContains: 2
