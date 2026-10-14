@@ -6,5 +6,5 @@ description: >-
 allOf:
   - $ref: bblocks://ogc.ogc-utils.prov
 contains:
-  $ref: bblocks://lu.rss-hydro.mom.processing-step
+  $ref: bblocks://lu.rss-hydro.mom.processing-activity
 minContains: 2

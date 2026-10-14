@@ -6,7 +6,7 @@
   "itemClass": "schema",
   "register": "ogc-incubator",
   "dependsOn": [
-    "lu.rss-hydro.mom.processing-step",
+    "lu.rss-hydro.mom.processing-activity",
     "lu.rss-hydro.mom.ontology.activities"
   ],
   "version": "0.1",

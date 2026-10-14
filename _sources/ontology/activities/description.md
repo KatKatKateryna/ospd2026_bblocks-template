@@ -1,6 +1,6 @@
 ## MoM workflow activity types
 
-Step types of the MoM flood workflow (subclasses of `prov:Activity`), candidate entries for
+Activity types of the MoM flood workflow (subclasses of `prov:Activity`), candidate entries for
 the OSPD process-type register, plus the entity type and properties the MoM profile uses, and the alert levels
 (`mom:AlertLevels`, MoMProduction 0.0.1-alpha).
 

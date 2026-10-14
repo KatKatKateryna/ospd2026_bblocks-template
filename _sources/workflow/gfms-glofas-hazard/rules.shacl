@@ -42,7 +42,7 @@
 <#stepInputsHaveCreationTime>
     a sh:NodeShape ;
     sh:targetObjectsOf prov:used ;
-    sh:message "Every input of a step must state when it was produced, or the version it is part of" ;
+    sh:message "Activity inputs need generatedAtTime or hasVersion" ;
     sh:or (
         [ sh:path prov:generatedAtTime ; sh:minCount 1 ]
         [ sh:path dcterms:hasVersion ; sh:minCount 1 ]

@@ -1,8 +1,8 @@
 ## MoM GFMS + GloFAS hazard score workflow
 
-Provenance of three steps of the RSS-Hydro Model of Models (MoM) flood workflow, GFMS only.
+Provenance of three activities of the RSS-Hydro Model of Models (MoM) flood workflow, GFMS only.
 
-| Step | Type | Uses | Generates |
+| Activity | Activity type | Uses | Generates |
 |---|---|---|---|
 | Cell attribution (optional) | `mom:WatershedCellAttribution` | watershed shapefile, GFMS grid | GFMS cell lookup |
 | Per-watershed aggregation | `mom:PerWatershedAggregation` | GFMS file, cell lookup, parameters | per-watershed aggregates |
@@ -16,4 +16,4 @@ with the software version (`dcterms:hasVersion`, `dcterms:isPartOf`).
 
 GFMS and GloFAS files state `mom:dataType`, `dcterms:format`, `mom:dataTime` (time the values
 refer to) and `generatedAtTime` (time the file was produced). `rules.shacl` enforces this and
-the links between the steps.
+the links between the activities.

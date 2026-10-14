@@ -1,5 +1,5 @@
 $schema: https://json-schema.org/draft/2020-12/schema
-description: A processing step, as a PROV Activity with the fields every step must state.
+description: One processing activity with its required PROV fields.
 allOf:
   - $ref: bblocks://ogc.ogc-utils.prov-activity
 required:

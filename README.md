@@ -7,7 +7,7 @@ Identifier prefix: `lu.rss-hydro.mom.`
 
 | Building block | Identifier | OSPD activity |
 |---|---|---|
-| Processing step provenance (generic) | `lu.rss-hydro.mom.processing-step` | 1 |
+| Processing activity provenance (generic) | `lu.rss-hydro.mom.processing-activity` | 1 |
 | MoM GFMS + GloFAS hazard score workflow | `lu.rss-hydro.mom.workflow.gfms-glofas-hazard` | 2 |
 | MoM workflow activity types (candidate process types) | `lu.rss-hydro.mom.ontology.activities` | 4 |
 
