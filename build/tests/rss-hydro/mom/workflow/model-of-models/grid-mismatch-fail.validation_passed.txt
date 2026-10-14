@@ -1,0 +1,115 @@
+Validation report for lu.rss-hydro.mom.workflow.model-of-models - Model of Models workflow
+Generated 2026-10-14T15:14:40.001080+00:00
+=== General ===
+Test was expected to fail and it did.
+=== End General ===
+
+=== Files ===
+Using grid-mismatch-fail.json from test resources
+JSON-LD context is present - uplifting
+Output JSON-LD grid-mismatch-fail.jsonld created
+Output Turtle grid-mismatch-fail.ttl created
+=== End Files ===
+
+=== JSON Schema ===
+Validation passed
+=== End JSON Schema ===
+
+=== SHACL ===
+Using SHACL closure graph sources (declared closures, ontologies and RDF data resources):
+ - /github/workspace/_sources/ontology/activities/ontology.ttl
+ - https://www.w3.org/ns/prov-o
+
+** Validation error **
+Validation result for _sources/workflow/model-of-models/rules.shacl:
+  Validation Report
+  Conforms: False
+  Results (1):
+  Constraint Violation in SPARQLConstraintComponent (http://www.w3.org/ns/shacl#SPARQLConstraintComponent):
+  	Severity: sh:Violation
+  	Source Shape: <https://rss-hydro.lu/ns/mom/rules/#gridMatchesLookup>
+  	Focus Node: run:aggregation
+  	Value Node: run:aggregation
+  	Source Constraint: [ sh:message Literal("Cell lookup grid must match the gridSignature of the data aggregated") ; sh:select Literal("
+              SELECT $this WHERE {
+                  $this <http://www.w3.org/ns/prov#used> ?lookup .
+                  ?lookup a <https://rss-hydro.lu/ns/mom/WatershedCellLookup> .
+                  FILTER NOT EXISTS {
+                      ?lookup <http://www.w3.org/ns/prov#wasDerivedFrom>/<https://rss-hydro.lu/ns/mom/gridSignature> ?g .
+                      $this <http://www.w3.org/ns/prov#used> ?data .
+                      ?data <https://rss-hydro.lu/ns/mom/gridSignature> ?g .
+                  }
+              }
+          ") ]
+  	Message: Cell lookup grid must match the gridSignature of the data aggregated
+  
+Focus nodes for _sources/workflow/model-of-models/rules.shacl:
+ - Shape <https://rss-hydro.lu/ns/mom/rules/#aggregationUsedCellLookup>: run:aggregation
+ - Shape <https://rss-hydro.lu/ns/mom/rules/#hazardAccumulationUsedAggregate>: run:hazard
+ - Shape <https://rss-hydro.lu/ns/mom/rules/#aggregationUsedCellLookup>/sh:property/sh:qualifiedValueShape: *none*
+ - Shape <https://rss-hydro.lu/ns/mom/rules/#gridMatchesLookup>: run:aggregation
+ - Shape <https://rss-hydro.lu/ns/mom/rules/#hazardAccumulationUsedAggregate>/sh:property/sh:qualifiedValueShape: *none*
+
+Validation result for https://ogcincubator.github.io/cross-domain-model/_sources/prov/shapes.shacl:
+  Validation Report
+  Conforms: True
+  
+Focus nodes for https://ogcincubator.github.io/cross-domain-model/_sources/prov/shapes.shacl:
+ - Shape <https://www.ogc.org/rules/prov/#prop-wasEndedBy>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-hadPlan>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedInfluence>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#Entity-shape>: run:gfms-summary-prev,run:watersheds,run:attributes,run:resilience,run:gfms-aggregates,run:gfms-grid,run:aggregation-parameters,run:final-attributes,run:gfms-bin,run:glofas-txt,run:glofas-points,run:hazard-parameters,run:gfms-summary,run:attributes-clean,run:weights
+ - Shape <https://www.ogc.org/rules/prov/#prop-wasQuotedFrom>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#Collection-shape>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-agent>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedAssociation>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-wasDerivedFrom>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#EmptyCollection-shape>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedRevision>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-specializationOf>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedEnd>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-atLocation>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-hadMember>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-wasAssociatedWith>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#Start-shape>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-influencer>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-used>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#Invalidation-shape>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedPrimarySource>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-wasInformedBy>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-hadGeneration>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedAttribution>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedUsage>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedGeneration>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-generated>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-activity>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedDerivation>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedInvalidation>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-hadUsage>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-hadPrimarySource>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-wasStartedBy>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-hadActivity>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-hadRole>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedCommunication>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-wasInvalidatedBy>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-entity>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#Usage-shape>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-actedOnBehalfOf>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-alternateOf>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-wasRevisionOf>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedDelegation>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#Bundle-shape>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedQuotation>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-wasGeneratedBy>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#Plan-shape>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedStart>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-invalidated>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#InstantaneousEvent-shape>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-wasInfluencedBy>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#Activity-shape>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#End-shape>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-wasAttributedTo>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#Generation-shape>: *none*
+
+=== End SHACL ===
+

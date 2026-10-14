@@ -3,7 +3,7 @@
   "name": "RSS-Hydro Model of Models Building Blocks",
   "abstract": "Provenance building blocks for the RSS-Hydro Model of Models (MoM) flood prediction workflow,\nprofiled for the OGC Open Science Persistent Demonstrator (OSPD) 2026.\n",
   "description": "W3C PROV profile and activity vocabulary for a minimal slice of the MoM workflow:\nGFMS per-watershed cell attribution, GFMS per-watershed aggregation, and GloFAS + GFMS\nhazard score accumulation.\n",
-  "modified": "2026-10-14T14:22:13.423156",
+  "modified": "2026-10-14T15:14:33.982546",
   "tooling": {
     "bblocks-postprocess": {
       "commitId": "\"f470eb472692ab3e5845074dc94405af89b2f182",
@@ -45,13 +45,14 @@
           "https://ogcincubator.github.io/cross-domain-model/_sources/prov/shapes.shacl"
         ]
       },
+      "ldContext": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/processing-activity/context.jsonld",
       "dateOfLastChange": "2026-10-14",
       "schema": {
         "application/yaml": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/processing-activity/schema.yaml",
         "application/json": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/processing-activity/schema.json"
       },
       "sourceSchema": "https://katkatkateryna.github.io/ospd2026_bblocks-template/_sources/processing-activity/schema.yaml",
-      "ldContext": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/processing-activity/context.jsonld",
+      "sourceLdContext": "https://katkatkateryna.github.io/ospd2026_bblocks-template/_sources/processing-activity/context.jsonld",
       "resolvedSchemaProperties": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/processing-activity/resolvedProperties.json",
       "sourceFiles": "https://katkatkateryna.github.io/ospd2026_bblocks-template/_sources/processing-activity/",
       "validationPassed": true,

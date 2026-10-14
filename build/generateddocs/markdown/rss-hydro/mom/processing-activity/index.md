@@ -11,8 +11,9 @@ Generic W3C PROV profile of one geospatial processing activity.
 
 ## Processing activity provenance
 
-Profile of `ogc.ogc-utils.prov-activity`. Requires `activityType`, `startedAtTime`,
-`endedAtTime`, `used`, `generated` and `wasAssociatedWith`.
+Profile of `ogc.ogc-utils.prov-activity`. Requires `activityType`, `name`, `startedAtTime`, `endedAtTime`, `used`, `generated` and `wasAssociatedWith`.
+
+Inline inputs need `generatedAtTime` or `dcterms:hasVersion`; inline software agents need `dcterms:hasVersion`.
 
 ## Examples
 
@@ -22,12 +23,20 @@ Profile of `ogc.ogc-utils.prov-activity`. Requires `activityType`, `startedAtTim
 {
   "id": "https://example.org/runs/42/resample",
   "activityType": "prov:Activity",
-  "name": "Resample elevation raster to 0.0625 degrees",
+  "name": "Resample elevation raster",
   "startedAtTime": "2026-03-02T01:00:00Z",
   "endedAtTime": "2026-03-02T01:00:07Z",
-  "used": "https://example.org/data/elevation.tif",
-  "generated": "https://example.org/data/elevation_0.0625.tif",
-  "wasAssociatedWith": "https://example.org/agents/gdal-warp"
+  "used": {
+    "id": "https://example.org/data/elevation.tif",
+    "generatedAtTime": "2026-02-01T00:00:00Z"
+  },
+  "generated": "https://example.org/data/elevation_resampled.tif",
+  "wasAssociatedWith": {
+    "id": "https://example.org/agents/gdal-warp",
+    "agentType": "prov:SoftwareAgent",
+    "name": "gdalwarp",
+    "dcterms:hasVersion": "3.9.0"
+  }
 }
 
 ```
@@ -38,28 +47,43 @@ Profile of `ogc.ogc-utils.prov-activity`. Requires `activityType`, `startedAtTim
   "@context": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/processing-activity/context.jsonld",
   "id": "https://example.org/runs/42/resample",
   "activityType": "prov:Activity",
-  "name": "Resample elevation raster to 0.0625 degrees",
+  "name": "Resample elevation raster",
   "startedAtTime": "2026-03-02T01:00:00Z",
   "endedAtTime": "2026-03-02T01:00:07Z",
-  "used": "https://example.org/data/elevation.tif",
-  "generated": "https://example.org/data/elevation_0.0625.tif",
-  "wasAssociatedWith": "https://example.org/agents/gdal-warp"
+  "used": {
+    "id": "https://example.org/data/elevation.tif",
+    "generatedAtTime": "2026-02-01T00:00:00Z"
+  },
+  "generated": "https://example.org/data/elevation_resampled.tif",
+  "wasAssociatedWith": {
+    "id": "https://example.org/agents/gdal-warp",
+    "agentType": "prov:SoftwareAgent",
+    "name": "gdalwarp",
+    "dcterms:hasVersion": "3.9.0"
+  }
 }
 ```
 
 #### ttl
 ```ttl
+@prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 <https://example.org/runs/42/resample> a prov:Activity ;
-    rdfs:label "Resample elevation raster to 0.0625 degrees" ;
+    rdfs:label "Resample elevation raster" ;
     prov:endedAtTime "2026-03-02T01:00:07+00:00"^^xsd:dateTime ;
-    prov:generated <https://example.org/data/elevation_0.0625.tif> ;
+    prov:generated <https://example.org/data/elevation_resampled.tif> ;
     prov:startedAtTime "2026-03-02T01:00:00+00:00"^^xsd:dateTime ;
     prov:used <https://example.org/data/elevation.tif> ;
     prov:wasAssociatedWith <https://example.org/agents/gdal-warp> .
+
+<https://example.org/agents/gdal-warp> a prov:SoftwareAgent ;
+    rdfs:label "gdalwarp" ;
+    dcterms:hasVersion "3.9.0" .
+
+<https://example.org/data/elevation.tif> prov:generatedAtTime "2026-02-01T00:00:00+00:00"^^xsd:dateTime .
 
 
 ```
@@ -74,11 +98,54 @@ allOf:
 required:
 - id
 - activityType
+- name
 - startedAtTime
 - endedAtTime
 - used
 - generated
 - wasAssociatedWith
+properties:
+  used:
+    anyOf:
+    - $ref: '#/$defs/datedOrVersioned'
+    - type: array
+      items:
+        $ref: '#/$defs/datedOrVersioned'
+  wasAssociatedWith:
+    anyOf:
+    - $ref: '#/$defs/softwareVersioned'
+    - type: array
+      items:
+        $ref: '#/$defs/softwareVersioned'
+$defs:
+  datedOrVersioned:
+    description: An inline entity states generatedAtTime or dcterms:hasVersion.
+    if:
+      type: object
+    then:
+      anyOf:
+      - required:
+        - generatedAtTime
+      - required:
+        - dcterms:hasVersion
+  softwareVersioned:
+    description: An inline software agent states dcterms:hasVersion.
+    if:
+      type: object
+      required:
+      - agentType
+      properties:
+        agentType:
+          anyOf:
+          - const: prov:SoftwareAgent
+          - type: array
+            contains:
+              const: prov:SoftwareAgent
+    then:
+      required:
+      - dcterms:hasVersion
+x-jsonld-prefixes:
+  dcterms: http://purl.org/dc/terms/
 
 ```
 
@@ -665,6 +732,7 @@ Links to the schema:
     "dct": "http://purl.org/dc/terms/",
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "oa": "http://www.w3.org/ns/oa#",
+    "dcterms": "http://purl.org/dc/terms/",
     "@version": 1.1
   }
 }

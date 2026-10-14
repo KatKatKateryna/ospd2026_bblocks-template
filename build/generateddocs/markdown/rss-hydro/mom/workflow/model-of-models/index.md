@@ -21,15 +21,9 @@ Provenance of three activities of the RSS-Hydro Model of Models (MoM) flood work
 
 Each activity is `dcterms:isPartOf` one `mom:WorkflowRun` activity.
 
-Cell attribution runs only when the lookup is missing or outdated; otherwise the lookup
-points to the earlier run that built it. The lookup derives from the versioned watershed
-shapefile (`mom:watershedFingerprint`) and the GFMS grid (`mom:gridSignature`), which ties each
-aggregate to the grid and watersheds it was clipped with. Parameters and static tables ship
-with the software version (`dcterms:hasVersion`, `dcterms:isPartOf`).
+Cell attribution runs only when the lookup is missing or outdated; otherwise the lookup points to the earlier run that built it. The lookup derives from the versioned watershed shapefile (`mom:watershedFingerprint`) and the GFMS grid (`mom:gridSignature`), which ties each aggregate to the grid and watersheds it was clipped with; the grid must match the GFMS data. Parameters and static tables ship with the software version (`dcterms:hasVersion`, `dcterms:isPartOf`).
 
-GFMS and GloFAS files state `mom:dataType`, `dcterms:format`, `mom:dataTime` (time the values
-refer to) and `generatedAtTime` (time the file was produced). `rules.shacl` enforces this and
-the links between the activities.
+GFMS and GloFAS files state `mom:dataType`, `dcterms:format`, `mom:dataTime` (time the values refer to) and `generatedAtTime` (time the file was produced). The schema enforces this; `rules.shacl` checks the links between activities.
 
 ## Examples
 
@@ -90,8 +84,8 @@ Usual run; the cell lookup comes from an earlier run. All values are illustrativ
     "entityType": "prov:Entity",
     "name": "GFMS Flood_byStor grid",
     "mom:dataType": "GFMS",
-    "dcterms:format": "GDAL VRT",
-    "mom:gridSignature": "[2880, 800, 0.125, 0.0, -180.0, 0.0, -0.125, 50.0]",
+    "dcterms:format": "GFMS Flood_byStor binary grid (float32)",
+    "mom:gridSignature": "[1440, 400, 0.25, 0.0, -180.0, 0.0, -0.25, 50.0]",
     "dcterms:hasVersion": "0.0.1-alpha",
     "dcterms:isPartOf": "run:mom"
   },
@@ -354,8 +348,8 @@ Usual run; the cell lookup comes from an earlier run. All values are illustrativ
       "entityType": "prov:Entity",
       "name": "GFMS Flood_byStor grid",
       "mom:dataType": "GFMS",
-      "dcterms:format": "GDAL VRT",
-      "mom:gridSignature": "[2880, 800, 0.125, 0.0, -180.0, 0.0, -0.125, 50.0]",
+      "dcterms:format": "GFMS Flood_byStor binary grid (float32)",
+      "mom:gridSignature": "[1440, 400, 0.25, 0.0, -180.0, 0.0, -0.25, 50.0]",
       "dcterms:hasVersion": "0.0.1-alpha",
       "dcterms:isPartOf": "run:mom"
     },
@@ -603,11 +597,11 @@ run:ecmwf a prov:Organization ;
 
 run:gfms-grid a prov:Entity ;
     rdfs:label "GFMS Flood_byStor grid" ;
-    dcterms:format "GDAL VRT" ;
+    dcterms:format "GFMS Flood_byStor binary grid (float32)" ;
     dcterms:hasVersion "0.0.1-alpha" ;
     dcterms:isPartOf run:mom ;
     mom:dataType "GFMS" ;
-    mom:gridSignature "[2880, 800, 0.125, 0.0, -180.0, 0.0, -0.125, 50.0]" .
+    mom:gridSignature "[1440, 400, 0.25, 0.0, -180.0, 0.0, -0.25, 50.0]" .
 
 run:glofas-txt a prov:Entity ;
     rdfs:label "threspoints_2026030200.txt" ;
@@ -819,8 +813,8 @@ Same run with cell attribution first. All values are illustrative.
     "entityType": "prov:Entity",
     "name": "GFMS Flood_byStor grid",
     "mom:dataType": "GFMS",
-    "dcterms:format": "GDAL VRT",
-    "mom:gridSignature": "[2880, 800, 0.125, 0.0, -180.0, 0.0, -0.125, 50.0]",
+    "dcterms:format": "GFMS Flood_byStor binary grid (float32)",
+    "mom:gridSignature": "[1440, 400, 0.25, 0.0, -180.0, 0.0, -0.25, 50.0]",
     "dcterms:hasVersion": "0.0.1-alpha",
     "dcterms:isPartOf": "run:mom"
   },
@@ -1101,8 +1095,8 @@ Same run with cell attribution first. All values are illustrative.
       "entityType": "prov:Entity",
       "name": "GFMS Flood_byStor grid",
       "mom:dataType": "GFMS",
-      "dcterms:format": "GDAL VRT",
-      "mom:gridSignature": "[2880, 800, 0.125, 0.0, -180.0, 0.0, -0.125, 50.0]",
+      "dcterms:format": "GFMS Flood_byStor binary grid (float32)",
+      "mom:gridSignature": "[1440, 400, 0.25, 0.0, -180.0, 0.0, -0.25, 50.0]",
       "dcterms:hasVersion": "0.0.1-alpha",
       "dcterms:isPartOf": "run:mom"
     },
@@ -1427,11 +1421,11 @@ run:gfms-bin a prov:Entity ;
 
 run:gfms-grid a prov:Entity ;
     rdfs:label "GFMS Flood_byStor grid" ;
-    dcterms:format "GDAL VRT" ;
+    dcterms:format "GFMS Flood_byStor binary grid (float32)" ;
     dcterms:hasVersion "0.0.1-alpha" ;
     dcterms:isPartOf run:mom ;
     mom:dataType "GFMS" ;
-    mom:gridSignature "[2880, 800, 0.125, 0.0, -180.0, 0.0, -0.125, 50.0]" .
+    mom:gridSignature "[1440, 400, 0.25, 0.0, -180.0, 0.0, -0.25, 50.0]" .
 
 run:gfms-summary a prov:Entity ;
     rdfs:label "GFMS_summary/Flood_byStor_2026030200.csv (duration recalculated)" ;
@@ -1542,14 +1536,79 @@ run:mom a prov:SoftwareAgent ;
 
 ```yaml
 $schema: https://json-schema.org/draft/2020-12/schema
-description: Provenance chain of one MoM GFMS + GloFAS run. Per-watershed aggregation
-  and hazard score accumulation are always present; cell attribution only when the
-  cell lookup is (re)built in the same run.
+description: Provenance chain of one MoM run. Per-watershed aggregation and hazard
+  score accumulation are always present; cell attribution only when the cell lookup
+  is (re)built in the same run.
 allOf:
 - $ref: https://ogcincubator.github.io/bblock-prov-schema/build/annotated/ogc-utils/prov/schema.yaml
 contains:
-  $ref: https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/processing-activity/schema.yaml
+  $ref: '#/$defs/isProcessingActivity'
 minContains: 2
+items:
+  allOf:
+  - if:
+      $ref: '#/$defs/isProcessingActivity'
+    then:
+      allOf:
+      - $ref: https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/processing-activity/schema.yaml
+      - required:
+        - dcterms:isPartOf
+  - if:
+      required:
+      - activityType
+      properties:
+        activityType:
+          const: mom:WorkflowRun
+    then:
+      required:
+      - id
+      - name
+      - startedAtTime
+      - endedAtTime
+      - wasAssociatedWith
+  - if:
+      required:
+      - entityType
+    then:
+      $ref: https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/processing-activity/schema.yaml#/$defs/datedOrVersioned
+  - $ref: https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/processing-activity/schema.yaml#/$defs/softwareVersioned
+  - if:
+      $ref: '#/$defs/isCellLookup'
+    then:
+      required:
+      - mom:watershedFingerprint
+      - generatedAtTime
+      - wasGeneratedBy
+      - wasDerivedFrom
+  - if:
+      required:
+      - mom:dataType
+    then:
+      required:
+      - dcterms:format
+      anyOf:
+      - required:
+        - dcterms:hasVersion
+      - $ref: '#/$defs/isCellLookup'
+      - required:
+        - generatedAtTime
+        - mom:dataTime
+$defs:
+  isProcessingActivity:
+    required:
+    - activityType
+    properties:
+      activityType:
+        enum:
+        - mom:WatershedCellAttribution
+        - mom:PerWatershedAggregation
+        - mom:HazardScoreAccumulation
+  isCellLookup:
+    required:
+    - entityType
+    properties:
+      entityType:
+        const: mom:WatershedCellLookup
 x-jsonld-extra-terms:
   mom:dataTime:
     x-jsonld-type: http://www.w3.org/2001/XMLSchema#dateTime

@@ -38,11 +38,11 @@ run:ecmwf a prov:Organization ;
 
 run:gfms-grid a prov:Entity ;
     rdfs:label "GFMS Flood_byStor grid" ;
-    dcterms:format "GDAL VRT" ;
+    dcterms:format "GFMS Flood_byStor binary grid (float32)" ;
     dcterms:hasVersion "0.0.1-alpha" ;
     dcterms:isPartOf run:mom ;
     mom:dataType "GFMS" ;
-    mom:gridSignature "[2880, 800, 0.125, 0.0, -180.0, 0.0, -0.125, 50.0]" .
+    mom:gridSignature "[1440, 400, 0.25, 0.0, -180.0, 0.0, -0.25, 50.0]" .
 
 run:glofas-txt a prov:Entity ;
     rdfs:label "threspoints_2026030200.txt" ;

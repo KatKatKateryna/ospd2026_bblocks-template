@@ -11,10 +11,7 @@ Activity and entity types emitted by the RSS-Hydro Model of Models flood workflo
 
 ## MoM workflow activity types
 
-Activity types of the MoM flood workflow (subclasses of `mom:Geoprocessing`, itself a
-`prov:Activity`), candidate entries for the OSPD process-type register, plus the entity type,
-properties, workflow run type (`mom:WorkflowRun`) and alert levels (`mom:AlertLevels`) the
-MoM profile uses.
+Activity types of the MoM flood workflow (subclasses of `mom:Geoprocessing`, itself a `prov:Activity`), candidate entries for the OSPD process-type register, plus the entity type, properties, workflow run type (`mom:WorkflowRun`) and alert levels (`mom:AlertLevels`) the MoM profile uses.
 
 | Term | Generic operation |
 |---|---|

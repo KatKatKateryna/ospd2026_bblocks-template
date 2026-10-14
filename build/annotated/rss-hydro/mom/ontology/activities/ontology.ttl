@@ -13,43 +13,37 @@ mom: a owl:Ontology ;
 mom:Advisory a skos:Concept ;
     skos:inScheme mom:AlertLevels ;
     skos:prefLabel "Advisory" ;
-    mom:hazardScoreAbove 35 ;
-    mom:hazardScoreBelow 60 .
+    mom:minHazardScore 35 .
 
 mom:HazardScoreAccumulation a owl:Class ;
     rdfs:label "Hazard score accumulation" ;
     rdfs:comment "Updates flood duration and combines GloFAS and GFMS scores into a hazard score and alert per watershed." ;
-    rdfs:subClassOf mom:Geoprocessing ;
-    skos:notation "MOM-A03" .
+    rdfs:subClassOf mom:Geoprocessing .
 
 mom:Information a skos:Concept ;
     skos:inScheme mom:AlertLevels ;
     skos:prefLabel "Information" ;
-    mom:hazardScoreAbove 0 ;
-    mom:hazardScoreBelow 35 .
+    mom:minHazardScore 0 .
 
 mom:PerWatershedAggregation a owl:Class ;
     rdfs:label "Per-watershed aggregation" ;
     rdfs:comment "Aggregates a gridded source per watershed, skipping nodata cells." ;
-    rdfs:subClassOf mom:Geoprocessing ;
-    skos:notation "MOM-A02" .
+    rdfs:subClassOf mom:Geoprocessing .
 
 mom:Warning a skos:Concept ;
     skos:inScheme mom:AlertLevels ;
     skos:prefLabel "Warning" ;
-    mom:hazardScoreAbove 80 .
+    mom:minHazardScore 80 .
 
 mom:Watch a skos:Concept ;
     skos:inScheme mom:AlertLevels ;
     skos:prefLabel "Watch" ;
-    mom:hazardScoreAbove 60 ;
-    mom:hazardScoreBelow 80 .
+    mom:minHazardScore 60 .
 
 mom:WatershedCellAttribution a owl:Class ;
     rdfs:label "Per-watershed cell attribution" ;
     rdfs:comment "Assigns grid cells to watersheds once, for reuse in aggregation." ;
-    rdfs:subClassOf mom:Geoprocessing ;
-    skos:notation "MOM-A01" .
+    rdfs:subClassOf mom:Geoprocessing .
 
 mom:WatershedCellLookup a owl:Class ;
     rdfs:label "Watershed cell lookup" ;
@@ -76,12 +70,8 @@ mom:gridSignature a owl:DatatypeProperty ;
     rdfs:comment "Grid width, height and affine transform." ;
     rdfs:range xsd:string .
 
-mom:hazardScoreAbove a owl:DatatypeProperty ;
-    rdfs:label "hazard score above" ;
-    rdfs:range xsd:decimal .
-
-mom:hazardScoreBelow a owl:DatatypeProperty ;
-    rdfs:label "hazard score below" ;
+mom:minHazardScore a owl:DatatypeProperty ;
+    rdfs:label "minimum hazard score" ;
     rdfs:range xsd:decimal .
 
 mom:watershedFingerprint a owl:DatatypeProperty ;

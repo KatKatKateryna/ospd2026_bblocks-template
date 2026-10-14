@@ -1,15 +1,137 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "description": "Provenance chain of one MoM GFMS + GloFAS run. Per-watershed aggregation and hazard score accumulation are always present; cell attribution only when the cell lookup is (re)built in the same run.",
+  "description": "Provenance chain of one MoM run. Per-watershed aggregation and hazard score accumulation are always present; cell attribution only when the cell lookup is (re)built in the same run.",
   "allOf": [
     {
       "$ref": "https://ogcincubator.github.io/bblock-prov-schema/build/annotated/ogc-utils/prov/schema.json"
     }
   ],
   "contains": {
-    "$ref": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/processing-activity/schema.json"
+    "$ref": "#/$defs/isProcessingActivity"
   },
   "minContains": 2,
+  "items": {
+    "allOf": [
+      {
+        "if": {
+          "$ref": "#/$defs/isProcessingActivity"
+        },
+        "then": {
+          "allOf": [
+            {
+              "$ref": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/processing-activity/schema.json"
+            },
+            {
+              "required": [
+                "dcterms:isPartOf"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "if": {
+          "required": [
+            "activityType"
+          ],
+          "properties": {
+            "activityType": {
+              "const": "mom:WorkflowRun"
+            }
+          }
+        },
+        "then": {
+          "required": [
+            "id",
+            "name",
+            "startedAtTime",
+            "endedAtTime",
+            "wasAssociatedWith"
+          ]
+        }
+      },
+      {
+        "if": {
+          "required": [
+            "entityType"
+          ]
+        },
+        "then": {
+          "$ref": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/processing-activity/schema.json#/$defs/datedOrVersioned"
+        }
+      },
+      {
+        "$ref": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/processing-activity/schema.json#/$defs/softwareVersioned"
+      },
+      {
+        "if": {
+          "$ref": "#/$defs/isCellLookup"
+        },
+        "then": {
+          "required": [
+            "mom:watershedFingerprint",
+            "generatedAtTime",
+            "wasGeneratedBy",
+            "wasDerivedFrom"
+          ]
+        }
+      },
+      {
+        "if": {
+          "required": [
+            "mom:dataType"
+          ]
+        },
+        "then": {
+          "required": [
+            "dcterms:format"
+          ],
+          "anyOf": [
+            {
+              "required": [
+                "dcterms:hasVersion"
+              ]
+            },
+            {
+              "$ref": "#/$defs/isCellLookup"
+            },
+            {
+              "required": [
+                "generatedAtTime",
+                "mom:dataTime"
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "$defs": {
+    "isProcessingActivity": {
+      "required": [
+        "activityType"
+      ],
+      "properties": {
+        "activityType": {
+          "enum": [
+            "mom:WatershedCellAttribution",
+            "mom:PerWatershedAggregation",
+            "mom:HazardScoreAccumulation"
+          ]
+        }
+      }
+    },
+    "isCellLookup": {
+      "required": [
+        "entityType"
+      ],
+      "properties": {
+        "entityType": {
+          "const": "mom:WatershedCellLookup"
+        }
+      }
+    }
+  },
   "x-jsonld-extra-terms": {
     "mom:dataTime": {
       "x-jsonld-type": "http://www.w3.org/2001/XMLSchema#dateTime"
