@@ -1,11 +1,11 @@
 ## MoM workflow activity types
 
-Activity types of the MoM flood workflow (subclasses of `prov:Activity`), candidate entries for
-the OSPD process-type register, plus the entity type and properties the MoM profile uses, and the alert levels
-(`mom:AlertLevels`, MoMProduction 0.0.1-alpha).
+Activity types of the MoM flood workflow (subclasses of `mom:Geoprocessing`, itself a
+`prov:Activity`), candidate entries for the OSPD process-type register, plus the entity type,
+properties and alert levels (`mom:AlertLevels`) the MoM profile uses.
 
-| Term | MoMProduction code |
+| Term | Generic operation |
 |---|---|
-| `mom:WatershedCellAttribution` | `gfms_cells.py` `build()` |
-| `mom:PerWatershedAggregation` | `GFMS_tool.py` `GFMS_extract_by_watershed()` |
-| `mom:HazardScoreAccumulation` | `GFMS_tool.py` `GFMS_fix_duration()`, `GFMS_MoM.py` `flood_severity()` |
+| `mom:WatershedCellAttribution` | zonal masking (grid cells to zones) |
+| `mom:PerWatershedAggregation` | zonal statistics |
+| `mom:HazardScoreAccumulation` | index composition and classification |

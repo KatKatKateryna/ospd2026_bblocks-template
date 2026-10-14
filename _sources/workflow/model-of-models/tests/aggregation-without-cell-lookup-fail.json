@@ -11,6 +11,11 @@
     "name": "RSS-Hydro"
   },
   {
+    "id": "run:server",
+    "agentType": "prov:Agent",
+    "name": "mom-prod-01 (illustrative server)"
+  },
+  {
     "id": "run:umd",
     "agentType": "prov:Organization",
     "name": "University of Maryland (GFMS)"
@@ -26,16 +31,16 @@
     "name": "Watershed_pfaf_id.shp",
     "dcterms:hasVersion": "0.0.0",
     "dcterms:format": "ESRI Shapefile",
-    "mom:watershedFingerprint": "652ca7d5a2f2d8830a1eb3565157f714db470a15c9d8f7d5b4e5bc94bb9aae64",
-    "generatedAtTime": "2026-02-28T21:27:07Z"
+    "mom:watershedFingerprint": "a09161ac707ef1d0355e92e730c8fe31e127149b803321bc988b3232058eea17",
+    "generatedAtTime": "2026-01-15T00:00:00Z"
   },
   {
     "id": "run:gfms-grid",
     "entityType": "prov:Entity",
-    "name": "GFMS Flood_byStor grid (0.0625°)",
+    "name": "GFMS Flood_byStor grid",
     "mom:dataType": "GFMS",
-    "dcterms:format": "GDAL VRT (0.0625°)",
-    "mom:gridSignature": "[4916, 1600, 0.0625, 0.0, -127.25, 0.0, -0.0625, 50.0]",
+    "dcterms:format": "GDAL VRT",
+    "mom:gridSignature": "[2880, 800, 0.125, 0.0, -180.0, 0.0, -0.125, 50.0]",
     "dcterms:hasVersion": "0.0.1-alpha",
     "dcterms:isPartOf": "run:mom"
   },
@@ -44,8 +49,8 @@
     "entityType": "mom:WatershedCellLookup",
     "name": "gfms_watershed_cells.npz",
     "mom:dataType": "GFMS",
-    "dcterms:format": "NumPy .npz cell lookup for the GFMS 0.0625° VRT grid",
-    "mom:watershedFingerprint": "652ca7d5a2f2d8830a1eb3565157f714db470a15c9d8f7d5b4e5bc94bb9aae64",
+    "dcterms:format": "NumPy .npz cell lookup",
+    "mom:watershedFingerprint": "a09161ac707ef1d0355e92e730c8fe31e127149b803321bc988b3232058eea17",
     "generatedAtTime": "2026-03-01T00:15:11Z",
     "wasGeneratedBy": "https://example.org/mom/run/2026030100/cell-attribution",
     "wasDerivedFrom": [
@@ -57,11 +62,11 @@
     "id": "run:gfms-bin",
     "entityType": "prov:Entity",
     "name": "Flood_byStor_2026030200.bin",
-    "dcat:downloadURL": "http://eagle2.umd.edu/flood/download/2026/202603/Flood_byStor_2026030200.bin",
+    "dcat:downloadURL": "https://example.org/gfms/Flood_byStor_2026030200.bin",
     "mom:dataType": "GFMS",
-    "dcterms:format": "GFMS Flood_byStor binary grid (float32, 0.125°)",
+    "dcterms:format": "GFMS Flood_byStor binary grid (float32)",
     "mom:gfmsNodataValue": -9999,
-    "mom:gridSignature": "[2458, 800, 0.125, 0.0, -127.25, 0.0, -0.125, 50.0]",
+    "mom:gridSignature": "[1440, 400, 0.25, 0.0, -180.0, 0.0, -0.25, 50.0]",
     "mom:dataTime": "2026-03-02T00:00:00Z",
     "generatedAtTime": "2026-03-02T01:05:32Z",
     "wasAttributedTo": "run:umd"
@@ -72,8 +77,8 @@
     "name": "GFMS per-watershed aggregation parameters",
     "dcterms:hasVersion": "0.0.1-alpha",
     "dcterms:isPartOf": "run:mom",
-    "mom:gfmsDurationAreaThresholdKm2": 100,
-    "mom:gfmsMinFileSizeBytes": 7000000
+    "mom:gfmsDurationAreaThresholdKm2": 50,
+    "mom:gfmsMinFileSizeBytes": 1000000
   },
   {
     "id": "run:aggregation",
@@ -83,13 +88,13 @@
     "endedAtTime": "2026-03-02T01:05:41Z",
     "used": [
       "run:gfms-bin",
-      "run:gfms-cells",
       "run:aggregation-parameters"
     ],
     "generated": "run:gfms-aggregates",
     "wasAssociatedWith": [
       "run:mom",
-      "run:rss-hydro"
+      "run:rss-hydro",
+      "run:server"
     ]
   },
   {
@@ -101,10 +106,7 @@
     "mom:dataTime": "2026-03-02T00:00:00Z",
     "generatedAtTime": "2026-03-02T01:05:41Z",
     "wasGeneratedBy": "run:aggregation",
-    "wasDerivedFrom": [
-      "run:gfms-bin",
-      "run:gfms-cells"
-    ]
+    "wasDerivedFrom": "run:gfms-bin"
   },
   {
     "id": "run:gfms-summary-prev",
@@ -119,7 +121,7 @@
     "id": "run:glofas-txt",
     "entityType": "prov:Entity",
     "name": "threspoints_2026030200.txt",
-    "dcat:downloadURL": "ftp://aux.ecmwf.int/for_PDC/threspoints_2026030200.txt",
+    "dcat:downloadURL": "https://example.org/glofas/threspoints_2026030200.txt",
     "mom:dataType": "GloFAS",
     "dcterms:format": "GloFAS threspoints station table (comma-separated text)",
     "mom:glofasNodataValue": -9999,
@@ -134,6 +136,7 @@
     "mom:dataType": "GloFAS",
     "dcterms:format": "text/csv",
     "mom:glofasNodataValue": -9999,
+    "mom:dataTime": "2026-03-02T00:00:00Z",
     "generatedAtTime": "2026-03-02T00:58:12Z",
     "wasDerivedFrom": "run:glofas-txt"
   },
@@ -167,7 +170,7 @@
     "name": "GloFAS + GFMS hazard score accumulation parameters",
     "dcterms:hasVersion": "0.0.1-alpha",
     "dcterms:isPartOf": "run:mom",
-    "mom:gfmsDurationAreaThresholdKm2": 100
+    "mom:gfmsDurationAreaThresholdKm2": 50
   },
   {
     "id": "run:hazard",
@@ -191,7 +194,8 @@
     ],
     "wasAssociatedWith": [
       "run:mom",
-      "run:rss-hydro"
+      "run:rss-hydro",
+      "run:server"
     ]
   },
   {

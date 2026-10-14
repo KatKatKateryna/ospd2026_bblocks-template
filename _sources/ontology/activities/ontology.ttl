@@ -12,20 +12,25 @@ mom: a owl:Ontology ;
 
 # Activities
 
-mom:WatershedCellAttribution a owl:Class ;
+mom:Geoprocessing a owl:Class ;
     rdfs:subClassOf prov:Activity ;
+    rdfs:label "Geoprocessing" ;
+    rdfs:comment "Parent of all MoM activity types." .
+
+mom:WatershedCellAttribution a owl:Class ;
+    rdfs:subClassOf mom:Geoprocessing ;
     rdfs:label "Per-watershed cell attribution" ;
     skos:notation "MOM-A01" ;
     rdfs:comment "Assigns grid cells to watersheds once, for reuse in aggregation." .
 
 mom:PerWatershedAggregation a owl:Class ;
-    rdfs:subClassOf prov:Activity ;
+    rdfs:subClassOf mom:Geoprocessing ;
     rdfs:label "Per-watershed aggregation" ;
     skos:notation "MOM-A02" ;
     rdfs:comment "Aggregates a gridded source per watershed, skipping nodata cells." .
 
 mom:HazardScoreAccumulation a owl:Class ;
-    rdfs:subClassOf prov:Activity ;
+    rdfs:subClassOf mom:Geoprocessing ;
     rdfs:label "Hazard score accumulation" ;
     skos:notation "MOM-A03" ;
     rdfs:comment "Updates flood duration and combines GloFAS and GFMS scores into a hazard score and alert per watershed." .

@@ -1,4 +1,4 @@
-## MoM GFMS + GloFAS hazard score workflow
+## Model of Models workflow
 
 Provenance of three activities of the RSS-Hydro Model of Models (MoM) flood workflow, GFMS only.
 

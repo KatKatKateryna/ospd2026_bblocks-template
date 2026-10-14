@@ -1,5 +1,5 @@
 {
-  "name": "MoM GFMS + GloFAS hazard score workflow",
+  "name": "Model of Models workflow",
   "abstract": "Tested provenance example of a slice of the RSS-Hydro Model of Models flood workflow: GFMS cell attribution, per-watershed aggregation, and GloFAS + GFMS hazard score accumulation.",
   "status": "under-development",
   "dateTimeAddition": "2026-10-14T00:00:00Z",
@@ -10,12 +10,12 @@
     "lu.rss-hydro.mom.ontology.activities"
   ],
   "version": "0.1",
-  "sources": [
-    {
-      "title": "Model of Models (MoM) flood workflow",
-      "link": "https://github.com/Global-Flood-Assessment/MoMProduction"
-    }
-  ],
   "scope": "dev",
-  "tags": ["flood", "hydrology", "GFMS", "GloFAS", "watershed"]
+  "tags": [
+    "flood",
+    "hydrology",
+    "GFMS",
+    "GloFAS",
+    "watershed"
+  ]
 }
