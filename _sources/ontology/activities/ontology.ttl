@@ -12,6 +12,11 @@ mom: a owl:Ontology ;
 
 # Activities
 
+mom:WorkflowRun a owl:Class ;
+    rdfs:subClassOf prov:Activity ;
+    rdfs:label "Workflow run" ;
+    rdfs:comment "One execution of the MoM workflow." .
+
 mom:Geoprocessing a owl:Class ;
     rdfs:subClassOf prov:Activity ;
     rdfs:label "Geoprocessing" ;

@@ -8,6 +8,8 @@ Provenance of three activities of the RSS-Hydro Model of Models (MoM) flood work
 | Per-watershed aggregation | `mom:PerWatershedAggregation` | GFMS file, cell lookup, parameters | per-watershed aggregates |
 | Hazard score accumulation | `mom:HazardScoreAccumulation` | aggregates, previous summary, GloFAS file, static tables, parameters | summary with duration, `Final_Attributes`, `Attributes_Clean` |
 
+Each activity is `dcterms:isPartOf` one `mom:WorkflowRun` activity.
+
 Cell attribution runs only when the lookup is missing or outdated; otherwise the lookup
 points to the earlier run that built it. The lookup derives from the versioned watershed
 shapefile (`mom:watershedFingerprint`) and the GFMS grid (`mom:gridSignature`), which ties each

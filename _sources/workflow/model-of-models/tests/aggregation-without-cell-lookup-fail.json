@@ -16,6 +16,18 @@
     "name": "mom-prod-01 (illustrative server)"
   },
   {
+    "id": "run:workflow-run",
+    "activityType": "mom:WorkflowRun",
+    "name": "MoM workflow run, 2026-03-02 00:00",
+    "startedAtTime": "2026-03-02T01:05:33Z",
+    "endedAtTime": "2026-03-02T01:12:47Z",
+    "wasAssociatedWith": [
+      "run:mom",
+      "run:rss-hydro",
+      "run:server"
+    ]
+  },
+  {
     "id": "run:umd",
     "agentType": "prov:Organization",
     "name": "University of Maryland (GFMS)"
@@ -95,7 +107,8 @@
       "run:mom",
       "run:rss-hydro",
       "run:server"
-    ]
+    ],
+    "dcterms:isPartOf": "run:workflow-run"
   },
   {
     "id": "run:gfms-aggregates",
@@ -196,7 +209,8 @@
       "run:mom",
       "run:rss-hydro",
       "run:server"
-    ]
+    ],
+    "dcterms:isPartOf": "run:workflow-run"
   },
   {
     "id": "run:gfms-summary",

@@ -2,7 +2,8 @@
 
 Activity types of the MoM flood workflow (subclasses of `mom:Geoprocessing`, itself a
 `prov:Activity`), candidate entries for the OSPD process-type register, plus the entity type,
-properties and alert levels (`mom:AlertLevels`) the MoM profile uses.
+properties, workflow run type (`mom:WorkflowRun`) and alert levels (`mom:AlertLevels`) the
+MoM profile uses.
 
 | Term | Generic operation |
 |---|---|
