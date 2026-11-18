@@ -65,23 +65,18 @@ Proposed replacement:
 
 Deliverable(s): D100 — Workflow Profiler; D001.
 
+RSS-Hydro participated in the OGC Open Science Persistent Demonstrator 2026 as a Workflow
+Profiler (D100), developing a profile of W3C PROV for a flood prediction automated pipeline.
+
 ### H.1 Contribution overview
 
-RSS-Hydro participated as a Workflow Profiler. The workflow profiled is the Model of Models (MoM),
-an operational flood-hazard chain that RSS-Hydro runs unattended: each data source has its own
-scheduled job, which downloads the latest third-party product, summarises it per watershed, updates
-a combined hazard score and publishes an alert level per watershed.
+Built: three Building Blocks (prefix `lu.rss-hydro.mom.`) profiling one scheduled run of the Model
+of Models (MoM) flood chain, published as a standalone register and mirrored to the shared
+open-science register, plus an offline validator.
 
-The contribution is a profile of W3C PROV for that chain, expressed as three OGC Building Blocks
-under the identifier prefix `lu.rss-hydro.mom.`, published as a register of its own and prepared for
-the shared open-science register.
-
-The question the profile is built around is not "what did this run do", which the base PROV model
-already answers, but "can this scheduled run be reproduced, and was any of its inputs broken".
-Because the chain runs without an operator, anything that is not stated in the record and checked
-automatically is not noticed: an upstream file that was not refreshed, a download that was truncated,
-a derived lookup that was built against a different grid, or a job that died halfway are all
-conditions that produce a plausible-looking output.
+Aim: make a run reproducible and make broken inputs fail validation — a stale or truncated upstream
+file, a lookup built for another grid, a job that died halfway. Unattended, these otherwise yield
+plausible-looking output.
 
 #### H.1.1 Profiled workflow
 
