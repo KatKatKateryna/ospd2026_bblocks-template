@@ -74,17 +74,7 @@ a combined hazard score and publishes an alert level per watershed.
 
 The contribution is a profile of W3C PROV for that chain, expressed as three OGC Building Blocks
 under the identifier prefix `lu.rss-hydro.mom.`, published as a register of its own and prepared for
-the shared open-science register:
-
-| Building block | Identifier | Item class |
-|---|---|---|
-| Processing activity provenance (generic) | `lu.rss-hydro.mom.processing-activity` | schema |
-| MoM workflow activity types | `lu.rss-hydro.mom.ontology.activities` | model |
-| Model of Models workflow | `lu.rss-hydro.mom.workflow.model-of-models` | schema |
-
-![Published register, Building Blocks list](images/register-blocks-list.png)
-
-*Figure H.1 — The three Building Blocks in the published register.*
+the shared open-science register.
 
 The question the profile is built around is not "what did this run do", which the base PROV model
 already answers, but "can this scheduled run be reproduced, and was any of its inputs broken".
@@ -93,7 +83,7 @@ automatically is not noticed: an upstream file that was not refreshed, a downloa
 a derived lookup that was built against a different grid, or a job that died halfway are all
 conditions that produce a plausible-looking output.
 
-### H.2 Workflow description
+#### H.1.1 Profiled workflow
 
 MoM ingests several independent products, each on its own schedule derived from the publication
 window of its provider — a global forecast model published shortly after each six-hourly cycle, a
@@ -135,11 +125,64 @@ matches the inputs, and otherwise the record points at the earlier run that prod
 That conditionality is itself part of the profile — it is what makes a reused artefact traceable
 across scheduled runs rather than only within one run.
 
-### H.3 Provenance implementation — Workflow Profilers and OGC API Processes Profilers
+#### H.1.2 Architecture
 
-Provenance is represented as W3C PROV in JSON-LD, reusing the OGC PROV schema Building Blocks
-(`ogc.ogc-utils.prov`, `ogc.ogc-utils.prov-activity`) rather than defining a parallel model. The
-profile adds three layers.
+The profile is layered, each layer a Building Block that depends only on the one below it:
+
+```mermaid
+flowchart BT
+  OGC["ogc.ogc-utils.prov / prov-activity<br/>OGC PROV schema blocks (imported)"]
+  PA["lu.rss-hydro.mom.processing-activity<br/>generic, one activity"]
+  ACT["lu.rss-hydro.mom.ontology.activities<br/>MoM activity and entity types"]
+  WF["lu.rss-hydro.mom.workflow.model-of-models<br/>one scheduled run"]
+  PA --> OGC
+  ACT --> PA
+  ACT --> OGC
+  WF --> PA
+  WF --> ACT
+```
+
+*Listing H.2 — Dependencies between the Building Blocks (`dependsOn` in each `bblock.json`).*
+
+| Building block | Identifier | Item class | Artefacts | Role |
+|---|---|---|---|---|
+| Processing activity provenance (generic) | `lu.rss-hydro.mom.processing-activity` | schema | JSON Schema, JSON-LD context, 2 negative tests | tightens the base PROV activity; domain-neutral |
+| MoM workflow activity types | `lu.rss-hydro.mom.ontology.activities` | model | OWL/SKOS ontology (Turtle), JSON-LD context, JSON Schema, 1 negative test | declares the `mom:` terms and checks that a typed activity is a valid processing activity |
+| Model of Models workflow | `lu.rss-hydro.mom.workflow.model-of-models` | schema | JSON Schema, SHACL rules, JSON-LD context, examples, 4 negative tests | constrains one run as a whole: entries, links between activities, grid consistency |
+
+![Published register, Building Blocks list](images/register-blocks-list.png)
+
+*Figure H.1 — The three Building Blocks in the published register.*
+
+Around the blocks:
+
+- **Build and publication.** The OGC Building Blocks postprocessor runs in CI on each push, imports
+  the main OGC register and the OGC PROV schema register, resolves `bblocks://` references, performs
+  the JSON-LD uplift, runs all checks and publishes the register, viewer and validation report to
+  GitHub Pages.
+- **Offline validator.** `local-build/` runs the same postprocessor image, pinned by digest, against
+  any record with networking disabled and all imports served from a pre-fetched cache (H.4).
+- **Shared register.** The same blocks are mirrored under `_sources/rss-hydro/` of a fork of the
+  shared open-science register.
+
+#### H.1.3 Design choices
+
+- **Profile the OGC PROV blocks rather than define a model.** Reusing `ogc.ogc-utils.prov-activity`
+  keeps records readable by any PROV consumer; the profile only adds constraints and terms.
+- **Generic and workflow blocks kept separate.** Constraints that hold for any processing activity
+  (end time, versioned software, dated inputs) sit in a domain-neutral block reusable outside MoM;
+  only MoM-specific rules sit in the workflow block.
+- **Vocabulary as its own model block.** Activity types are an ontology, not schema enums, so they
+  can be moved to the process-type register without changing the schemas that use them.
+- **JSON Schema plus SHACL.** Per-entry checks in JSON Schema, graph-level checks in SHACL (H.5).
+- **Offline validation, not CI only.** Needed for the profile to be applied by the scheduled job
+  itself.
+
+### H.2 Provenance implementation — Workflow Profilers and OGC API Processes Profilers
+
+**Building block built against.** The profile reuses the OGC PROV schema Building Blocks
+(`ogc.ogc-utils.prov`, `ogc.ogc-utils.prov-activity`) and refines them; no parallel model is
+defined.
 
 **Generic processing activity.** `lu.rss-hydro.mom.processing-activity` is domain-neutral and
 constrains one activity. It is reusable outside MoM, and is what the OSPD base block would look like
@@ -154,7 +197,7 @@ $defs:
   softwareVersioned:  # an inline software agent states dcterms:hasVersion
 ```
 
-*Listing H.2 — Constraints tightened over the base block (abridged from `schema.yaml`).*
+*Listing H.3 — Constraints tightened over the base block (abridged from `schema.yaml`).*
 
 **Activity and entity types.** `lu.rss-hydro.mom.ontology.activities` declares the MoM terms as
 subclasses of `prov:Activity` and `prov:Entity` under `mom:` (`https://rss-hydro.lu/ns/mom/`),
@@ -179,7 +222,7 @@ and agents they refer to.
     required: [mom:watershedFingerprint, generatedAtTime, wasGeneratedBy, wasDerivedFrom]
 ```
 
-*Listing H.3 — Per-entry rules that make a stale or unattributable input a validation failure
+*Listing H.4 — Per-entry rules that make a stale or unattributable input a validation failure
 (abridged from `schema.yaml`).*
 
 Relationships between activities cannot be expressed in JSON Schema and are stated as SHACL shapes
@@ -191,7 +234,7 @@ applied after the JSON-LD uplift.
     sh:sparql [ sh:message "Cell lookup grid must match the gridSignature of the data aggregated" ; ... ] .
 ```
 
-*Listing H.4 — One of three SHACL rules: aggregation must use a cell lookup, the lookup's grid must
+*Listing H.5 — One of three SHACL rules: aggregation must use a cell lookup, the lookup's grid must
 match the grid of the data being aggregated, and hazard accumulation must use the output of an
 aggregation (abridged from `rules.shacl`).*
 
@@ -213,14 +256,29 @@ and the signature of the grid it is on, and the activity that consumed it.
   "dcterms:isPartOf": "run:workflow-run" }
 ```
 
-*Listing H.5 — Excerpt of the published example record (identifiers and values illustrative).*
+*Listing H.6 — Excerpt of the published example record (identifiers and values illustrative).*
 
 ![Data structure view of the workflow block](images/bblock-data-structure.png)
 
 *Figure H.2 — The workflow block in the register viewer: required properties, the enumeration of MoM
 activity types, and the imported PROV terms they refine.*
 
-### H.4 Process types and register contribution — all Participants
+**Identifiers.** Each run has its own namespace, `run:` = `https://example.org/mom/run/<YYYYMMDDHH>/`,
+keyed by the data cycle, and each activity, entity and agent is named within it (`run:aggregation`,
+`run:gfms-bin`). Identifiers are therefore deterministic: emitting the same run twice yields the same
+IRIs, which merge in RDF. Illustrative base pending production emission.
+
+**Chain linking.** Within a run, a step's output is linked to the next step's input by identifier
+(`generated` of one activity in `used` of the next), and every activity is `dcterms:isPartOf` the
+`mom:WorkflowRun`. Across runs, a reused artefact (the cell lookup) points with `wasGeneratedBy` to
+the full IRI of the activity in the earlier run that produced it. SHACL checks that the links hold.
+
+**Where records live.** Currently as examples and tests of the workflow block, published with the
+register. In production, one record per run beside the products (H.7).
+
+**OGC API — Processes.** Not applicable; MoM is not exposed as an OGC API — Processes service.
+
+### H.3 Process types and register contribution — all Participants
 
 Three activity types are offered as candidate entries for the process-type register. They are stated
 as subclasses of a common parent, `mom:Geoprocessing`, so that the register can place them under a
@@ -242,7 +300,7 @@ level, so that a published alert can be resolved back to the thresholds in force
 Identifiers are currently in a vendor namespace and versioned `0.1` with status *under development*;
 they are placeholders pending assignment of resolvable register identifiers.
 
-### H.5 Validation evidence
+### H.4 Validation evidence
 
 All three blocks build and validate with the OGC Building Blocks postprocessor in CI, and the
 published report shows 3 / 3 blocks passing, over eleven test records: four examples and seven
@@ -273,9 +331,9 @@ route to the registers, and a failure is raised on the same path as a failed dow
 
 The provenance records published with the blocks are representative of one production run, with
 illustrative identifiers; emission of the records by the production code itself is future work
-(H.9).
+(H.7).
 
-### H.6 Provenance encoding: choice and reasoning
+### H.5 Provenance encoding: choice and reasoning
 
 The encoding is PROV in JSON-LD, with the constraints split between JSON Schema and SHACL.
 
@@ -294,7 +352,7 @@ gets most of the checks.
 JSON-LD rather than Turtle because the production code already writes JSON, and the uplift to RDF is
 performed by the Building Block tooling.
 
-### H.7 Findings and lessons learned
+### H.6 Findings and lessons learned
 
 **The base block is permissive by design, and that is where profiling earns its place.** Records
 that are valid against the generic PROV blocks can be useless for reproduction — an activity with no
@@ -328,7 +386,7 @@ entities and activities, and expressing "at least two MoM activities, each part 
 `contains` / `minContains` with per-item conditionals. It validates correctly, but a failure reports
 the document rather than the offending entry, which is poor feedback for an operator.
 
-### H.8 Recommendations
+### H.7 Recommendations
 
 - Record, per registered process type, what inputs and outputs it is expected to have, so a workflow
   profile can check a record against its declared type instead of restating the expectation.
@@ -341,7 +399,7 @@ the document rather than the offending entry, which is poor feedback for an oper
 - Resolve process-type identifiers and their versioning before profiles are asked to depend on them;
   until then, profiles have to point at vendor namespaces, which is not reusable.
 
-### H.9 Future work
+RSS-Hydro's next steps:
 
 - Emit the provenance document from the production code — one record per scheduled run, written
   beside the products — and validate it in the job, so that a broken or stale source raises an alert
@@ -354,7 +412,7 @@ the document rather than the offending entry, which is poor feedback for an oper
 - Evaluate RO-Crate for packaging the products of a run alongside the record, now that the record
   itself is defined.
 
-### H.10 References
+### H.8 References
 
 - RSS-Hydro MoM Building Blocks — repository: https://github.com/KatKatKateryna/ospd2026_bblocks-template
 - RSS-Hydro MoM Building Blocks — published register: https://katkatkateryna.github.io/ospd2026_bblocks-template/
