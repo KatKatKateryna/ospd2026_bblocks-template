@@ -44,16 +44,17 @@ Proposed replacement:
 > an association, and by requiring every inline input to carry either a generation time or a version
 > and every inline software agent to carry a version; a small activity-type vocabulary whose three
 > geoprocessing terms are candidate entries for the process-type register; and a workflow block that
-> profiles one scheduled run of the GFMS and GloFAS slice of the chain, with the links between its
-> activities constrained in JSON Schema and SHACL.
+> profiles one scheduled run from the GFMS and GloFAS branch of the chain to the final alert that
+> combines the hazard scores of all sources, with the links between its activities constrained in
+> JSON Schema and SHACL.
 >
 > The stated design target was the reproducibility of a scheduled run rather than the description of
-> a single interactive execution. A record therefore states which grid and which version of the
-> watershed geometry produced each aggregate, separates the time the input data refers to from the
-> time the input file was written, and binds parameters and static tables to the software version
-> they ship with. Two failure modes of an operational chain become validation failures rather than
-> silently wrong numbers: an input that is stale or truncated, and a derived lookup reused against a
-> grid it no longer matches. Eleven tests are published with the register, seven of them negative
+> a single interactive execution. A record therefore separates the time the input data refers to
+> from the time the input file was written, traces each model's hazard score in the published alert
+> to the dated data it was computed from, and binds parameters and static tables to the software
+> version they ship with. Two failure modes of an operational chain become validation failures rather
+> than silently wrong numbers: an input that is stale or truncated, and an alert combining a model
+> score that cannot be traced to dated source data. Eleven tests are published with the register, seven of them negative
 > tests that assert the constraints reject malformed records, and the same blocks were prepared for
 > the shared open-science register. The Participant also reported that validation has to be runnable
 > offline for a profile to be usable inside a scheduled job, and supplied a pinned offline validator
@@ -75,7 +76,7 @@ of Models (MoM) flood chain, published as a standalone register and mirrored to 
 open-science register, plus an offline validator.
 
 Aim: make a run reproducible and make broken inputs fail validation — a stale or truncated upstream
-file, a lookup built for another grid, a job that died halfway. Unattended, these otherwise yield
+file, a model score with no dated source, a job that died halfway. Unattended, these otherwise yield
 plausible-looking output.
 
 #### H.1.1 Profiled workflow
@@ -86,24 +87,27 @@ daily threshold-point forecast published mid-morning, and daily satellite flood 
 the following night. Each job downloads the product, aggregates it per watershed, accumulates the
 MoM hazard score with the previous state of the chain, and publishes alerts.
 
-The slice profiled for OSPD 2026 is the GFMS and GloFAS part of that chain, which contains the three
-operations that recur, in some form, in every source branch: attribute grid cells to zones once,
-aggregate a gridded product per zone, then compose and classify an index.
+The slice profiled for OSPD 2026 follows the GFMS and GloFAS branch of that chain to the final
+alert, and contains the three operations that recur, in some form, across the chain: aggregate a
+gridded product per zone, compose and classify an index, then fuse the indices of all sources into
+one alert.
 
 ```mermaid
 flowchart TD
-  WS["Watershed geometry<br/>versioned + fingerprinted"] --> CA
-  GRID["GFMS grid<br/>grid signature"] --> CA
-  CA["1. Cell attribution<br/>mom:WatershedCellAttribution"] --> LK["Watershed cell lookup<br/>mom:WatershedCellLookup"]
-  LK --> AGG
+  WS["Watershed geometry<br/>versioned + fingerprinted"] --> AGG
   GFMS["GFMS flood grid<br/>dataTime + generatedAtTime"] --> AGG
   PAR["Aggregation parameters<br/>version of the software"] -.-> AGG
-  AGG["2. Per-watershed aggregation<br/>mom:PerWatershedAggregation"] --> AGR["Per-watershed aggregates"]
+  AGG["1. Per-watershed aggregation<br/>mom:PerWatershedAggregation"] --> AGR["Per-watershed aggregates"]
   AGR --> HZ
   PREV["Previous summary<br/>of the same source"] --> HZ
   GLO["GloFAS threshold points<br/>dataTime + generatedAtTime"] --> HZ
   TBL["Static tables<br/>attributes, resilience, weights"] -.-> HZ
-  HZ["3. Hazard score accumulation<br/>mom:HazardScoreAccumulation"] --> OUT["Summary with duration,<br/>Final_Attributes, Attributes_Clean"]
+  HZ["2. Hazard score accumulation<br/>mom:HazardScoreAccumulation"] --> SC["GloFAS + GFMS hazard score<br/>mom:HazardScore"]
+  SC --> FA
+  OTH["Hazard scores of other sources<br/>mom:HazardScore, each derived<br/>from dated source data"] --> FA
+  PFA["Previous final alert<br/>earlier run"] --> FA
+  ADM["Admin table"] -.-> FA
+  FA["3. Final alert<br/>mom:FinalAlert"] --> OUT["Final alert with status<br/>per watershed"]
 ```
 
 *Listing H.1 — The profiled slice: three activities, their inputs (dashed: configuration shipped with
@@ -111,14 +115,16 @@ the software) and their outputs. All three are `dcterms:isPartOf` one `mom:Workf
 
 | Activity | Activity type | Uses | Generates |
 |---|---|---|---|
-| Cell attribution (only when the lookup is missing or outdated) | `mom:WatershedCellAttribution` | watershed geometry, source grid | cell lookup |
-| Per-watershed aggregation | `mom:PerWatershedAggregation` | source file, cell lookup, parameters | per-watershed aggregates |
-| Hazard score accumulation | `mom:HazardScoreAccumulation` | aggregates, previous summary, GloFAS file, static tables, parameters | summary with recalculated duration, final attributes, cleaned attributes |
+| Per-watershed aggregation | `mom:PerWatershedAggregation` | source file, watershed geometry, parameters | per-watershed aggregates |
+| Hazard score accumulation | `mom:HazardScoreAccumulation` | aggregates, previous summary, GloFAS file, static tables, parameters | summary with recalculated duration, GloFAS + GFMS hazard score, cleaned attributes |
+| Final alert | `mom:FinalAlert` | GloFAS + GFMS hazard score, hazard scores of any other sources, previous final alert, admin table | final alert with status per watershed |
 
-Cell attribution is the only step that is conditional: it runs when the lookup is absent or no longer
-matches the inputs, and otherwise the record points at the earlier run that produced the lookup.
-That conditionality is itself part of the profile — it is what makes a reused artefact traceable
-across scheduled runs rather than only within one run.
+The final alert is the step that reads across models and across runs. Each model's score refers to
+its own data time — in the example, one source's score to the previous six-hourly cycle and
+another's to the day before — and the record links each score to the dated data it was derived
+from. The previous final alert points at the earlier run that produced it; on a first run there is
+none and every watershed is New. This is what makes a published alert traceable across sources and
+scheduled runs rather than only within one run.
 
 #### H.1.2 Architecture
 
@@ -143,7 +149,7 @@ flowchart BT
 |---|---|---|---|---|
 | Processing activity provenance (generic) | `lu.rss-hydro.mom.processing-activity` | schema | JSON Schema, JSON-LD context, 2 negative tests | tightens the base PROV activity; domain-neutral |
 | MoM workflow activity types | `lu.rss-hydro.mom.ontology.activities` | model | OWL/SKOS ontology (Turtle), JSON-LD context, JSON Schema, 1 negative test | declares the `mom:` terms and checks that a typed activity is a valid processing activity |
-| Model of Models workflow | `lu.rss-hydro.mom.workflow.model-of-models` | schema | JSON Schema, SHACL rules, JSON-LD context, examples, 4 negative tests | constrains one run as a whole: entries, links between activities, grid consistency |
+| Model of Models workflow | `lu.rss-hydro.mom.workflow.model-of-models` | schema | JSON Schema, SHACL rules, JSON-LD context, examples, 4 negative tests | constrains one run as a whole: entries, links between activities, dated derivation of model scores |
 
 ![Published register, Building Blocks list](images/register-blocks-list.png)
 
@@ -196,25 +202,24 @@ $defs:
 
 **Activity and entity types.** `lu.rss-hydro.mom.ontology.activities` declares the MoM terms as
 subclasses of `prov:Activity` and `prov:Entity` under `mom:` (`https://rss-hydro.lu/ns/mom/`),
-together with the properties the profile needs (`mom:dataType`, `mom:dataTime`, `mom:gridSignature`,
-`mom:watershedFingerprint`) and the SKOS scheme of alert levels the last activity assigns. Its schema
+together with the properties the profile needs (`mom:dataType`, `mom:dataTime`,
+`mom:watershedFingerprint`) and the SKOS scheme of alert levels the hazard score accumulation assigns. Its schema
 checks that any record carrying one of these activity types is a valid processing activity.
 
 **One workflow run.** `lu.rss-hydro.mom.workflow.model-of-models` constrains a whole PROV document:
-at least two MoM activities, each linked to a single `mom:WorkflowRun` activity, plus the entities
+three MoM activities, each linked to a single `mom:WorkflowRun` activity, plus the entities
 and agents they refer to.
 
 ```yaml
+- if: {$ref: '#/$defs/isHazardScore'}
+  then:
+    required: [mom:dataType, mom:dataTime, generatedAtTime, wasDerivedFrom]
 - if: {required: [mom:dataType]}
   then:
     required: [dcterms:format]
     anyOf:
       - required: [dcterms:hasVersion]          # configuration shipped with the software
-      - $ref: '#/$defs/isCellLookup'            # derived, carries its own provenance
-      - required: [generatedAtTime, mom:dataTime]   # third-party input: both times required
-- if: {$ref: '#/$defs/isCellLookup'}
-  then:
-    required: [mom:watershedFingerprint, generatedAtTime, wasGeneratedBy, wasDerivedFrom]
+      - required: [generatedAtTime, mom:dataTime]   # data and scores: both times required
 ```
 
 *Listing H.4 — Per-entry rules that make a stale or unattributable input a validation failure
@@ -224,29 +229,33 @@ Relationships between activities cannot be expressed in JSON Schema and are stat
 applied after the JSON-LD uplift.
 
 ```turtle
-<#gridMatchesLookup> a sh:NodeShape ;
-    sh:targetClass mom:PerWatershedAggregation ;
-    sh:sparql [ sh:message "Cell lookup grid must match the gridSignature of the data aggregated" ; ... ] .
+<#hazardScoreDerivedFromDatedData> a sh:NodeShape ;
+    sh:targetClass mom:HazardScore ;
+    sh:sparql [ sh:message "Hazard score must derive from model data with a mom:dataTime" ; ... ] .
 ```
 
-*Listing H.5 — One of three SHACL rules: aggregation must use a cell lookup, the lookup's grid must
-match the grid of the data being aggregated, and hazard accumulation must use the output of an
-aggregation (abridged from `rules.shacl`).*
+*Listing H.5 — One of three SHACL rules: hazard accumulation must use the output of an aggregation,
+the final alert must use a hazard score of a hazard accumulation, and every hazard score must derive
+from model data with a data time (abridged from `rules.shacl`).*
 
 A record of one run is a JSON-LD array of agents, entities and activities. The excerpt below shows
-the two parts that carry the reproducibility information: a third-party input with both of its times
-and the signature of the grid it is on, and the activity that consumed it.
+the parts that carry the reproducibility information: a third-party input with both of its times,
+the hazard score derived from it, and the final alert that combined the scores of all sources.
 
 ```json
-{ "id": "run:gfms-bin", "entityType": "prov:Entity",
-  "mom:dataType": "GFMS", "dcterms:format": "GFMS Flood_byStor binary grid (float32)",
-  "mom:gridSignature": "[1440, 400, 0.25, 0.0, -180.0, 0.0, -0.25, 50.0]",
-  "mom:dataTime": "2026-03-02T00:00:00Z", "generatedAtTime": "2026-03-02T01:05:32Z",
-  "wasAttributedTo": "run:umd" },
-{ "id": "run:aggregation", "activityType": "mom:PerWatershedAggregation",
-  "startedAtTime": "2026-03-02T01:05:33Z", "endedAtTime": "2026-03-02T01:05:41Z",
-  "used": ["run:gfms-bin", "run:gfms-cells", "run:aggregation-parameters"],
-  "generated": "run:gfms-aggregates",
+{ "id": "run:source-2-data", "entityType": "prov:Entity",
+  "mom:dataType": "Source 2", "dcterms:format": "GeoTIFF",
+  "mom:dataTime": "2026-02-28T00:00:00Z", "generatedAtTime": "2026-03-01T02:10:44Z",
+  "wasAttributedTo": "run:provider-1" },
+{ "id": "run:source-2-score", "entityType": "mom:HazardScore",
+  "mom:dataType": "Source 2", "dcterms:format": "text/csv",
+  "mom:dataTime": "2026-02-28T00:00:00Z", "generatedAtTime": "2026-03-01T04:12:30Z",
+  "wasDerivedFrom": "run:source-2-data" },
+{ "id": "run:final-alert", "activityType": "mom:FinalAlert",
+  "startedAtTime": "2026-03-02T01:12:48Z", "endedAtTime": "2026-03-02T01:12:52Z",
+  "used": ["run:final-attributes", "run:source-1-score", "run:source-2-score",
+           "run:final-alert-prev", "run:admin-centroids"],
+  "generated": "run:final-alert-output",
   "wasAssociatedWith": ["run:mom", "run:rss-hydro", "run:server"],
   "dcterms:isPartOf": "run:workflow-run" }
 ```
@@ -265,7 +274,7 @@ IRIs, which merge in RDF. Illustrative base pending production emission.
 
 **Chain linking.** Within a run, a step's output is linked to the next step's input by identifier
 (`generated` of one activity in `used` of the next), and every activity is `dcterms:isPartOf` the
-`mom:WorkflowRun`. Across runs, a reused artefact (the cell lookup) points with `wasGeneratedBy` to
+`mom:WorkflowRun`. Across runs, a reused artefact (the previous final alert) points with `wasGeneratedBy` to
 the full IRI of the activity in the earlier run that produced it. SHACL checks that the links hold.
 
 **Where records live.** Currently as examples and tests of the workflow block, published with the
@@ -282,14 +291,14 @@ the MoM implementation.
 
 | Term | Generic operation | Register note |
 |---|---|---|
-| `mom:WatershedCellAttribution` | zonal masking (grid cells to zones) | derived artefact is reused across runs; candidate parent for any "build a zonal index" step |
 | `mom:PerWatershedAggregation` | zonal statistics | the aggregation function and the nodata handling are parameters, not separate types |
 | `mom:HazardScoreAccumulation` | index composition and classification | composes weighted indicators and assigns a level from a published scheme |
+| `mom:FinalAlert` | multi-source fusion and change detection | combines the indices of several sources and compares with the previous issue; the status (New, Continued, Upgraded, Downgraded) is an output, not a separate type |
 
 Alongside them the profile contributes three supporting terms that proved necessary to describe a
 scheduled chain and are offered for discussion rather than registration: `mom:WorkflowRun`, the
-activity that groups one run; `mom:WatershedCellLookup`, the entity type for a derived index reused
-across runs; and `mom:AlertLevels`, a versioned SKOS scheme giving the minimum score of each alert
+activity that groups one run; `mom:HazardScore`, the entity type for one source's score table, which
+must be traceable to the dated data it was computed from; and `mom:AlertLevels`, a versioned SKOS scheme giving the minimum score of each alert
 level, so that a published alert can be resolved back to the thresholds in force when it was issued.
 
 Identifiers are currently in a vendor namespace and versioned `0.1` with status *under development*;
@@ -313,8 +322,8 @@ documented and kept honest.
 | `software-without-version-fail` | an inline software agent must state its version |
 | `unknown-activity-type-fail` | an activity typed only as `prov:Activity` is not a MoM activity |
 | `activity-without-end-time-fail` | an activity that never ended is not a complete record |
-| `aggregation-without-cell-lookup-fail` | an aggregate with no stated zonal index is not reproducible |
-| `grid-mismatch-fail` | a cell lookup must not be reused against another grid |
+| `final-alert-without-accumulated-score-fail` | a final alert must use a hazard score of the hazard accumulation |
+| `hazard-score-without-dated-source-fail` | a model's hazard score must derive from data with a data time |
 | `glofas-without-data-time-fail` | a third-party input must state the time its data refers to |
 
 Validation can also be run away from CI. `local-build/validate.sh` applies the same three checks —
@@ -339,9 +348,9 @@ keeps the record small enough to produce inside each job.
 
 JSON Schema was chosen for everything that can be checked on one entry — required fields, the two
 times, formats, versions — because it is cheap, runs anywhere and gives an error at the point of
-emission. SHACL was used only where a statement is about the graph: that an aggregation used a cell
-lookup, that the lookup's grid matches the data aggregated, that hazard accumulation used the output
-of an aggregation. Keeping the two separate also means a job that cannot run an RDF toolchain still
+emission. SHACL was used only where a statement is about the graph: that hazard accumulation used
+the output of an aggregation, that the final alert used an accumulated hazard score, and that every
+hazard score derives from dated model data. Keeping the two separate also means a job that cannot run an RDF toolchain still
 gets most of the checks.
 
 JSON-LD rather than Turtle because the production code already writes JSON, and the uplift to RDF is
@@ -361,12 +370,14 @@ reused the previous day's input is indistinguishable from a correct one, which i
 failure an unattended chain must detect. The profile adds `mom:dataTime` and requires both on every
 third-party input.
 
-**Identity of a derived artefact depends on inputs that are not files.** Aggregates depend on the
-grid geometry and on the version of the watershed geometry, neither of which is a downloadable
-artefact. Recording them as a grid signature and a fingerprint makes reuse checkable — the SHACL
-rule rejects a lookup applied to a grid it was not built for. A generic provenance model has nowhere
-to put this, so every profile re-invents it; a shared term for "signature of the discretisation an
-artefact is tied to" would be reusable well beyond hydrology.
+**A fused product is only as traceable as its least documented input.** The final alert combines
+scores of several sources, each on its own schedule, so one alert mixes data times: in the example
+one source's score refers to the previous cycle and another's to the day before. Unless
+each score is linked to the data time it was computed from, a source that silently stopped updating
+looks the same as a current one. The profile types each score as `mom:HazardScore` and SHACL
+requires a derivation path to dated model data; a generic provenance model has no notion of this,
+so a shared pattern for "inputs of a fused product and their data times" would be reusable well
+beyond hydrology.
 
 **Which provenance block to profile was not obvious.** Several PROV Building Blocks were available
 across the initiative with overlapping scope, and the choice was made on inspection rather than on
@@ -377,7 +388,7 @@ image by digest and caching every imported register and schema was necessary bef
 be considered for the scheduled runs.
 
 **Constraining a document rather than a single object is awkward.** One run is an array of agents,
-entities and activities, and expressing "at least two MoM activities, each part of one run" uses
+entities and activities, and expressing "three MoM activities, each part of one run" uses
 `contains` / `minContains` with per-item conditionals. It validates correctly, but a failure reports
 the document rather than the offending entry, which is poor feedback for an operator.
 
@@ -399,7 +410,8 @@ RSS-Hydro's next steps:
 - Emit the provenance document from the production code — one record per scheduled run, written
   beside the products — and validate it in the job, so that a broken or stale source raises an alert
   through the existing path instead of being discovered in the numbers.
-- Extend the profile to the remaining source branches of the chain and to the publication step, and
+- Extend the profile to the activities of the remaining source branches, whose scores the final
+  alert already uses, and to the publication step, and
   link consecutive runs through the artefacts they reuse, giving a provenance trail across the
   schedule rather than within one run.
 - Re-point the activity types at register identifiers once assigned, and submit the alert-level
