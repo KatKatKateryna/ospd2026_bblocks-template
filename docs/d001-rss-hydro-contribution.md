@@ -42,8 +42,8 @@ Proposed replacement:
 > processing-activity profile derived from the base PROV utility block, which tightens what that
 > block leaves open by requiring an activity type, a name, start and end times, inputs, outputs and
 > an association, and by requiring every inline input to carry either a generation time or a version
-> and every inline software agent to carry a version; a small activity-type vocabulary whose three
-> geoprocessing terms are candidate entries for the process-type register; and a workflow block that
+> and every inline software agent to carry a version; a small vocabulary whose three process types
+> are candidate entries for the process-type register; and a workflow block that
 > profiles one scheduled run from the aggregation of a source to the final alert that combines the
 > hazard scores of all sources, with the links between its activities constrained in
 > JSON Schema and SHACL.
@@ -89,8 +89,8 @@ MoM hazard score with the previous state of the chain, and publishes alerts.
 
 The slice profiled for OSPD 2026 follows one source branch of that chain to the final alert, and
 contains the three operations that recur, in some form, across the chain: aggregate a
-gridded product per zone, compose and classify an index, then fuse the indices of all sources into
-one alert. The activity types are source-neutral; in the examples, GFMS is the aggregated source and
+gridded product per zone, compose and classify an index, then score several sources together and
+track the result against the previous one. The process types are source-neutral; in the examples, GFMS is the aggregated source and
 GloFAS an extra model input.
 
 ```mermaid
@@ -98,17 +98,17 @@ flowchart TD
   WS["Watershed geometry<br/>versioned + fingerprinted"] --> AGG
   SRC["Gridded source, e.g. GFMS<br/>dataTime + generatedAtTime"] --> AGG
   PAR["Aggregation parameters<br/>version of the software"] -.-> AGG
-  AGG["1. Per-watershed aggregation<br/>mom:PerWatershedAggregation"] --> AGR["Per-watershed aggregates"]
+  AGG["1. Per-watershed aggregation<br/>ZonalStatistics"] --> AGR["Per-watershed aggregates"]
   AGR --> HZ
   PREV["Previous summary<br/>of the same source"] --> HZ
   EXT["Extra model inputs, e.g. GloFAS<br/>dataTime + generatedAtTime"] -.-> HZ
   TBL["Static tables<br/>attributes, resilience, weights"] -.-> HZ
-  HZ["2. Hazard score accumulation<br/>mom:HazardScoreAccumulation"] --> SC["Hazard score<br/>mom:HazardScore"]
+  HZ["2. Hazard score accumulation<br/>WeightedScoringAndClassification"] --> SC["Hazard score<br/>mom:HazardScore"]
   SC --> FA
   OTH["Hazard scores of other sources<br/>mom:HazardScore, each derived<br/>from dated source data"] --> FA
   PFA["Previous final alert<br/>earlier run"] --> FA
   ADM["Admin table"] -.-> FA
-  FA["3. Final alert<br/>mom:FinalAlert"] --> OUT["Final alert with status<br/>per watershed"]
+  FA["3. Final alert<br/>ScoringAndProgressTracking"] --> OUT["Final alert with status<br/>per watershed"]
   classDef activity fill:#dbeafe,stroke:#1d4ed8,color:#0b1f4d
   class AGG,HZ,FA activity
 ```
@@ -118,9 +118,9 @@ the software, or optional) and their outputs. All three are `dcterms:isPartOf` o
 
 | Activity | Activity type | Uses | Generates |
 |---|---|---|---|
-| Per-watershed aggregation | `mom:PerWatershedAggregation` | source file, watershed geometry, parameters | per-watershed aggregates |
-| Hazard score accumulation | `mom:HazardScoreAccumulation` | aggregates, previous summary, extra model inputs (optional), static tables, parameters | summary with recalculated duration, hazard score, cleaned attributes |
-| Final alert | `mom:FinalAlert` | hazard score of the accumulation, hazard scores of any other sources, previous final alert, admin table | final alert with status per watershed |
+| Per-watershed aggregation | `ZonalStatistics` | source file, watershed geometry, parameters | per-watershed aggregates |
+| Hazard score accumulation | `WeightedScoringAndClassification` | aggregates, previous summary, extra model inputs (optional), static tables, parameters | summary with recalculated duration, hazard score, cleaned attributes |
+| Final alert | `ScoringAndProgressTracking` | hazard score of the accumulation, hazard scores of any other sources, previous final alert, admin table | final alert with status per watershed |
 
 The final alert is the step that reads across models and across runs. Each model's score refers to
 its own data time — in the example, one source's score to the previous six-hourly cycle and
@@ -151,7 +151,7 @@ flowchart BT
 | Building block | Identifier | Item class | Artefacts | Role |
 |---|---|---|---|---|
 | Processing activity provenance (generic) | `lu.rss-hydro.mom.processing-activity` | schema | JSON Schema, JSON-LD context, 2 negative tests | tightens the base PROV activity; domain-neutral |
-| MoM workflow activity types | `lu.rss-hydro.mom.ontology.activities` | model | OWL/SKOS ontology (Turtle), JSON-LD context, JSON Schema, 1 negative test | declares the `mom:` terms and checks that a typed activity is a valid processing activity |
+| MoM workflow activity types | `lu.rss-hydro.mom.ontology.activities` | model | OWL/SKOS ontology (Turtle), JSON-LD context, JSON Schema, 1 negative test | declares the process types and the `mom:` terms and checks that a typed activity states its `processType` and is a valid processing activity |
 | Model of Models workflow | `lu.rss-hydro.mom.workflow.model-of-models` | schema | JSON Schema, SHACL rules, JSON-LD context, examples, 4 negative tests | constrains one run as a whole: entries, links between activities, dated derivation of model scores |
 
 ![Published register, Building Blocks list](images/register-blocks-list.png)
@@ -190,12 +190,15 @@ defined.
 
 **Generic processing activity.** `lu.rss-hydro.mom.processing-activity` is domain-neutral and
 constrains one activity. It is reusable outside MoM, and is what the OSPD base block would look like
-with its optional parts made mandatory.
+with its optional parts made mandatory. It also offers `processType` (`dcterms:type`), the link to a
+registered process type that the shared OSPD processing-step profile uses.
 
 ```yaml
 allOf:
   - $ref: bblocks://ogc.ogc-utils.prov-activity
 required: [id, activityType, name, startedAtTime, endedAtTime, used, generated, wasAssociatedWith]
+properties:
+  processType:        # optional: IRI of the registered process type (dcterms:type)
 $defs:
   datedOrVersioned:   # an inline entity states generatedAtTime or dcterms:hasVersion
   softwareVersioned:  # an inline software agent states dcterms:hasVersion
@@ -203,11 +206,12 @@ $defs:
 
 *Listing H.3 — Constraints tightened over the base block (abridged from `schema.yaml`).*
 
-**Activity and entity types.** `lu.rss-hydro.mom.ontology.activities` declares the MoM terms as
-subclasses of `prov:Activity` and `prov:Entity` under `mom:` (`https://rss-hydro.lu/ns/mom/`),
-together with the properties the profile needs (`mom:dataType`, `mom:dataTime`,
-`mom:watershedFingerprint`) and the SKOS scheme of alert levels the hazard score accumulation assigns. Its schema
-checks that any record carrying one of these activity types is a valid processing activity.
+**Activity and entity types.** `lu.rss-hydro.mom.ontology.activities` declares three process types
+as subclasses of `prov:Activity` in a placeholder process-type namespace (`https://example.org/ospd/process-types/`),
+and the MoM terms under `mom:` (`https://rss-hydro.lu/ns/mom/`): the entity type `mom:HazardScore`,
+the properties the profile needs (`mom:dataType`, `mom:dataTime`, `mom:watershedFingerprint`) and the
+SKOS scheme of alert levels the weighted scoring assigns. Its schema checks that any record carrying
+one of these process types states the matching `processType` and is a valid processing activity.
 
 **One workflow run.** `lu.rss-hydro.mom.workflow.model-of-models` constrains a whole PROV document:
 three MoM activities, each linked to a single `mom:WorkflowRun` activity, plus the entities
@@ -254,7 +258,8 @@ the hazard score derived from it, and the final alert that combined the scores o
   "mom:dataType": "Source 2", "dcterms:format": "text/csv",
   "mom:dataTime": "2026-02-28T00:00:00Z", "generatedAtTime": "2026-03-01T04:12:30Z",
   "wasDerivedFrom": "run:source-2-data" },
-{ "id": "run:final-alert", "activityType": "mom:FinalAlert",
+{ "id": "run:final-alert", "activityType": "ScoringAndProgressTracking",
+  "processType": "https://example.org/ospd/process-types/scoring-and-progress-tracking",
   "startedAtTime": "2026-03-02T01:12:48Z", "endedAtTime": "2026-03-02T01:12:52Z",
   "used": ["run:final-attributes", "run:source-1-score", "run:source-2-score",
            "run:final-alert-prev", "run:admin-centroids"],
@@ -267,8 +272,8 @@ the hazard score derived from it, and the final alert that combined the scores o
 
 ![Data structure view of the workflow block](images/bblock-data-structure.png)
 
-*Figure H.2 — The workflow block in the register viewer: required properties, the enumeration of MoM
-activity types, and the imported PROV terms they refine.*
+*Figure H.2 — The workflow block in the register viewer: required properties, the enumeration of
+process types, and the imported PROV terms they refine.*
 
 **Identifiers.** Each run has its own namespace, `run:` = `https://example.org/mom/run/<YYYYMMDDHH>/`,
 keyed by the data cycle, and each activity, entity and agent is named within it (`run:aggregation`,
@@ -287,16 +292,18 @@ register. In production, one record per run beside the products (H.7).
 
 ### H.3 Process types and register contribution — all Participants
 
-Three activity types are offered as candidate entries for the process-type register. They are stated
-as subclasses of a common parent, `mom:Geoprocessing`, so that the register can place them under a
+Three process types are offered as candidate entries for the process-type register. They are stated
+as subclasses of a common parent, `Geoprocessing`, so that the register can place them under a
 broader operation if one is adopted, and each is named after the generic operation rather than after
-the MoM implementation.
+the MoM implementation. Types and parent sit in a placeholder namespace, `https://example.org/ospd/process-types/`,
+the base the other OSPD provenance contributions use; each record also links its activity with
+`processType` to the register term, as the shared processing-step profile does.
 
-| Term | Generic operation | Register note |
-|---|---|---|
-| `mom:PerWatershedAggregation` | zonal statistics | the aggregation function and the nodata handling are parameters, not separate types |
-| `mom:HazardScoreAccumulation` | index composition and classification | composes weighted indicators and assigns a level from a published scheme |
-| `mom:FinalAlert` | multi-source fusion and change detection | combines the indices of several sources and compares with the previous issue; the status (New, Continued, Upgraded, Downgraded) is an output, not a separate type |
+| Term | Register term (`processType`) | Generic operation | Register note |
+|---|---|---|---|
+| `ZonalStatistics` | `zonal-statistics` | zonal statistics | the aggregation function and the nodata handling are parameters, not separate types |
+| `WeightedScoringAndClassification` | `weighted-scoring-and-classification` | index composition and classification | composes weighted indicators and assigns a level from a published scheme |
+| `ScoringAndProgressTracking` | `scoring-and-progress-tracking` | multi-source scoring and progress tracking | combines the scores of several sources and compares with the previous issue; the status (New, Continued, Upgraded, Downgraded) is an output, not a separate type |
 
 Alongside them the profile contributes three supporting terms that proved necessary to describe a
 scheduled chain and are offered for discussion rather than registration: `mom:WorkflowRun`, the
@@ -304,8 +311,9 @@ activity that groups one run; `mom:HazardScore`, the entity type for one source'
 must be traceable to the dated data it was computed from; and `mom:AlertLevels`, a versioned SKOS scheme giving the minimum score of each alert
 level, so that a published alert can be resolved back to the thresholds in force when it was issued.
 
-Identifiers are currently in a vendor namespace and versioned `0.1` with status *under development*;
-they are placeholders pending assignment of resolvable register identifiers.
+Process types are in a placeholder namespace and the supporting terms in a vendor namespace, versioned
+`0.1` with status *under development*; they are placeholders pending assignment of resolvable
+register identifiers.
 
 ### H.4 Validation evidence
 
@@ -374,13 +382,13 @@ reused the previous day's input is indistinguishable from a correct one, which i
 failure an unattended chain must detect. The profile adds `mom:dataTime` and requires both on every
 third-party input.
 
-**A fused product is only as traceable as its least documented input.** The final alert combines
+**A combined result is only as traceable as its least documented input.** The final alert combines
 scores of several sources, each on its own schedule, so one alert mixes data times: in the example
 one source's score refers to the previous cycle and another's to the day before. Unless
 each score is linked to the data time it was computed from, a source that silently stopped updating
 looks the same as a current one. The profile types each score as `mom:HazardScore` and SHACL
 requires a derivation path to dated model data; a generic provenance model has no notion of this,
-so a shared pattern for "inputs of a fused product and their data times" would be reusable well
+so a shared pattern for "inputs of a combined result and their data times" would be reusable well
 beyond hydrology.
 
 **Which provenance block to profile was not obvious.** Several PROV Building Blocks were available
@@ -418,7 +426,7 @@ RSS-Hydro's next steps:
   alert already uses, and to the publication step, and
   link consecutive runs through the artefacts they reuse, giving a provenance trail across the
   schedule rather than within one run.
-- Re-point the activity types at register identifiers once assigned, and submit the alert-level
+- Re-point the process types and `processType` values at register identifiers once assigned, and submit the alert-level
   scheme as an example of a run-time classification vocabulary that has to be versioned.
 - Evaluate RO-Crate for packaging the products of a run alongside the record, now that the record
   itself is defined.
