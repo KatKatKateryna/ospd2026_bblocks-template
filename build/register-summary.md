@@ -5,8 +5,8 @@ profiled for the OGC Open Science Persistent Demonstrator (OSPD) 2026.
 
 
 W3C PROV profile and activity vocabulary for a minimal slice of the MoM workflow:
-GFMS per-watershed aggregation, GloFAS + GFMS hazard score accumulation, and the final
-alert from the hazard scores of all sources.
+per-watershed aggregation of a gridded source, hazard score accumulation with extra model
+inputs, and the final alert from the hazard scores of all sources.
 
 
 ## Building Blocks
@@ -27,5 +27,5 @@ Activity and entity types emitted by the RSS-Hydro Model of Models flood workflo
 
 **Type:** schema
 
-Tested provenance example of a slice of the RSS-Hydro Model of Models flood workflow: GFMS per-watershed aggregation, GloFAS + GFMS hazard score accumulation, and the final alert from the hazard scores of all sources.
+Tested provenance example of a slice of the RSS-Hydro Model of Models flood workflow: per-watershed aggregation of a gridded source, hazard score accumulation with extra model inputs, and the final alert from the hazard scores of all sources. GFMS and GloFAS are example sources.
 

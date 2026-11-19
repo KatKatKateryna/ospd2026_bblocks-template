@@ -2,8 +2,8 @@
   "metaRegistry": "https://w3id.org/ogc/bblocks/meta-register.json",
   "name": "RSS-Hydro Model of Models Building Blocks",
   "abstract": "Provenance building blocks for the RSS-Hydro Model of Models (MoM) flood prediction workflow,\nprofiled for the OGC Open Science Persistent Demonstrator (OSPD) 2026.\n",
-  "description": "W3C PROV profile and activity vocabulary for a minimal slice of the MoM workflow:\nGFMS per-watershed aggregation, GloFAS + GFMS hazard score accumulation, and the final\nalert from the hazard scores of all sources.\n",
-  "modified": "2026-11-19T01:56:00.447972",
+  "description": "W3C PROV profile and activity vocabulary for a minimal slice of the MoM workflow:\nper-watershed aggregation of a gridded source, hazard score accumulation with extra model\ninputs, and the final alert from the hazard scores of all sources.\n",
+  "modified": "2026-11-19T03:19:29.112727",
   "tooling": {
     "bblocks-postprocess": {
       "commitId": "\"2deb5c60331691186d997e4f6ae9aab18b548ce5",
@@ -129,7 +129,7 @@
     {
       "itemIdentifier": "lu.rss-hydro.mom.workflow.model-of-models",
       "name": "Model of Models workflow",
-      "abstract": "Tested provenance example of a slice of the RSS-Hydro Model of Models flood workflow: GFMS per-watershed aggregation, GloFAS + GFMS hazard score accumulation, and the final alert from the hazard scores of all sources.",
+      "abstract": "Tested provenance example of a slice of the RSS-Hydro Model of Models flood workflow: per-watershed aggregation of a gridded source, hazard score accumulation with extra model inputs, and the final alert from the hazard scores of all sources. GFMS and GloFAS are example sources.",
       "status": "under-development",
       "dateTimeAddition": "2026-10-14T00:00:00Z",
       "itemClass": "schema",
@@ -144,8 +144,6 @@
       "tags": [
         "flood",
         "hydrology",
-        "GFMS",
-        "GloFAS",
         "watershed"
       ],
       "shaclShapes": {

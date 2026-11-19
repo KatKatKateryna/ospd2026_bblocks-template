@@ -27,7 +27,7 @@ mom:HazardScore a owl:Class ;
 
 mom:HazardScoreAccumulation a owl:Class ;
     rdfs:label "Hazard score accumulation" ;
-    rdfs:comment "Updates flood duration and combines GloFAS and GFMS scores into a hazard score and alert per watershed." ;
+    rdfs:comment "Updates flood duration from per-watershed aggregates and combines them with any extra model inputs into a hazard score and alert per watershed." ;
     rdfs:subClassOf mom:Geoprocessing .
 
 mom:Information a skos:Concept ;
