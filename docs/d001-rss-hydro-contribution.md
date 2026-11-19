@@ -44,8 +44,8 @@ Proposed replacement:
 > an association, and by requiring every inline input to carry either a generation time or a version
 > and every inline software agent to carry a version; a small activity-type vocabulary whose three
 > geoprocessing terms are candidate entries for the process-type register; and a workflow block that
-> profiles one scheduled run from the GFMS and GloFAS branch of the chain to the final alert that
-> combines the hazard scores of all sources, with the links between its activities constrained in
+> profiles one scheduled run from the aggregation of a source to the final alert that combines the
+> hazard scores of all sources, with the links between its activities constrained in
 > JSON Schema and SHACL.
 >
 > The stated design target was the reproducibility of a scheduled run rather than the description of
@@ -87,37 +87,40 @@ daily threshold-point forecast published mid-morning, and daily satellite flood 
 the following night. Each job downloads the product, aggregates it per watershed, accumulates the
 MoM hazard score with the previous state of the chain, and publishes alerts.
 
-The slice profiled for OSPD 2026 follows the GFMS and GloFAS branch of that chain to the final
-alert, and contains the three operations that recur, in some form, across the chain: aggregate a
+The slice profiled for OSPD 2026 follows one source branch of that chain to the final alert, and
+contains the three operations that recur, in some form, across the chain: aggregate a
 gridded product per zone, compose and classify an index, then fuse the indices of all sources into
-one alert.
+one alert. The activity types are source-neutral; in the examples, GFMS is the aggregated source and
+GloFAS an extra model input.
 
 ```mermaid
 flowchart TD
   WS["Watershed geometry<br/>versioned + fingerprinted"] --> AGG
-  GFMS["GFMS flood grid<br/>dataTime + generatedAtTime"] --> AGG
+  SRC["Gridded source, e.g. GFMS<br/>dataTime + generatedAtTime"] --> AGG
   PAR["Aggregation parameters<br/>version of the software"] -.-> AGG
   AGG["1. Per-watershed aggregation<br/>mom:PerWatershedAggregation"] --> AGR["Per-watershed aggregates"]
   AGR --> HZ
   PREV["Previous summary<br/>of the same source"] --> HZ
-  GLO["GloFAS threshold points<br/>dataTime + generatedAtTime"] --> HZ
+  EXT["Extra model inputs, e.g. GloFAS<br/>dataTime + generatedAtTime"] -.-> HZ
   TBL["Static tables<br/>attributes, resilience, weights"] -.-> HZ
-  HZ["2. Hazard score accumulation<br/>mom:HazardScoreAccumulation"] --> SC["GloFAS + GFMS hazard score<br/>mom:HazardScore"]
+  HZ["2. Hazard score accumulation<br/>mom:HazardScoreAccumulation"] --> SC["Hazard score<br/>mom:HazardScore"]
   SC --> FA
   OTH["Hazard scores of other sources<br/>mom:HazardScore, each derived<br/>from dated source data"] --> FA
   PFA["Previous final alert<br/>earlier run"] --> FA
   ADM["Admin table"] -.-> FA
   FA["3. Final alert<br/>mom:FinalAlert"] --> OUT["Final alert with status<br/>per watershed"]
+  classDef activity fill:#dbeafe,stroke:#1d4ed8,color:#0b1f4d
+  class AGG,HZ,FA activity
 ```
 
 *Listing H.1 — The profiled slice: three activities, their inputs (dashed: configuration shipped with
-the software) and their outputs. All three are `dcterms:isPartOf` one `mom:WorkflowRun`.*
+the software, or optional) and their outputs. All three are `dcterms:isPartOf` one `mom:WorkflowRun`.*
 
 | Activity | Activity type | Uses | Generates |
 |---|---|---|---|
 | Per-watershed aggregation | `mom:PerWatershedAggregation` | source file, watershed geometry, parameters | per-watershed aggregates |
-| Hazard score accumulation | `mom:HazardScoreAccumulation` | aggregates, previous summary, GloFAS file, static tables, parameters | summary with recalculated duration, GloFAS + GFMS hazard score, cleaned attributes |
-| Final alert | `mom:FinalAlert` | GloFAS + GFMS hazard score, hazard scores of any other sources, previous final alert, admin table | final alert with status per watershed |
+| Hazard score accumulation | `mom:HazardScoreAccumulation` | aggregates, previous summary, extra model inputs (optional), static tables, parameters | summary with recalculated duration, hazard score, cleaned attributes |
+| Final alert | `mom:FinalAlert` | hazard score of the accumulation, hazard scores of any other sources, previous final alert, admin table | final alert with status per watershed |
 
 The final alert is the step that reads across models and across runs. Each model's score refers to
 its own data time — in the example, one source's score to the previous six-hourly cycle and
@@ -324,7 +327,7 @@ documented and kept honest.
 | `activity-without-end-time-fail` | an activity that never ended is not a complete record |
 | `final-alert-without-accumulated-score-fail` | a final alert must use a hazard score of the hazard accumulation |
 | `hazard-score-without-dated-source-fail` | a model's hazard score must derive from data with a data time |
-| `glofas-without-data-time-fail` | a third-party input must state the time its data refers to |
+| `source-without-data-time-fail` | a third-party input must state the time its data refers to |
 
 Validation can also be run away from CI. `local-build/validate.sh` applies the same three checks —
 JSON Schema, JSON-LD uplift, SHACL — to any JSON record, inside a Docker image pinned by digest,
@@ -333,9 +336,10 @@ prints PASS or FAIL per record with the reason. This is what makes the profile u
 scheduled job: the run validates its own provenance before publishing, on a machine that may have no
 route to the registers, and a failure is raised on the same path as a failed download.
 
-The provenance records published with the blocks are representative of one production run, with
-illustrative identifiers; emission of the records by the production code itself is future work
-(H.7).
+The example records published with the blocks are reference provenance records for the MoM PROV
+profile: they validate against all three Building Blocks and follow the structure and timing of one
+scheduled run, but are written by hand with illustrative identifiers and values rather than emitted
+by the production chain. Emission of the records by the production code itself is future work (H.7).
 
 ### H.5 Provenance encoding: choice and reasoning
 
