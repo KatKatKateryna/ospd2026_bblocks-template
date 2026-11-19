@@ -1,6 +1,6 @@
 {
   "name": "Model of Models workflow",
-  "abstract": "Tested provenance example of a slice of the RSS-Hydro Model of Models flood workflow: GFMS cell attribution, per-watershed aggregation, and GloFAS + GFMS hazard score accumulation.",
+  "abstract": "Tested provenance example of a slice of the RSS-Hydro Model of Models flood workflow: GFMS per-watershed aggregation, GloFAS + GFMS hazard score accumulation, and the final alert from the hazard scores of all sources.",
   "status": "under-development",
   "dateTimeAddition": "2026-10-14T00:00:00Z",
   "itemClass": "schema",

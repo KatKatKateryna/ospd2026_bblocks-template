@@ -8,4 +8,4 @@ $defs:
     required: [activityType]
     properties:
       activityType:
-        enum: [mom:WatershedCellAttribution, mom:PerWatershedAggregation, mom:HazardScoreAccumulation]
+        enum: [mom:PerWatershedAggregation, mom:HazardScoreAccumulation, mom:FinalAlert]

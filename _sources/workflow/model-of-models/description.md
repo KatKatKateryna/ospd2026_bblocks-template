@@ -1,15 +1,15 @@
 ## Model of Models workflow
 
-Provenance of three activities of the RSS-Hydro Model of Models (MoM) flood workflow, GFMS only.
+Provenance of three activities of the RSS-Hydro Model of Models (MoM) flood workflow.
 
 | Activity | Activity type | Uses | Generates |
 |---|---|---|---|
-| Cell attribution (optional) | `mom:WatershedCellAttribution` | watershed shapefile, GFMS grid | GFMS cell lookup |
-| Per-watershed aggregation | `mom:PerWatershedAggregation` | GFMS file, cell lookup, parameters | per-watershed aggregates |
-| Hazard score accumulation | `mom:HazardScoreAccumulation` | aggregates, previous summary, GloFAS file, static tables, parameters | summary with duration, `Final_Attributes`, `Attributes_Clean` |
+| Per-watershed aggregation | `mom:PerWatershedAggregation` | GFMS file, watershed shapefile, parameters | per-watershed aggregates |
+| Hazard score accumulation | `mom:HazardScoreAccumulation` | aggregates, previous summary, GloFAS file, static tables, parameters | summary with duration, GloFAS + GFMS hazard score (`Final_Attributes`), `Attributes_Clean` |
+| Final alert | `mom:FinalAlert` | GloFAS + GFMS hazard score, hazard scores of any other sources, previous final alert (optional), admin table | final alert with status per watershed |
 
 Each activity is `dcterms:isPartOf` one `mom:WorkflowRun` activity.
 
-Cell attribution runs only when the lookup is missing or outdated; otherwise the lookup points to the earlier run that built it. The lookup derives from the versioned watershed shapefile (`mom:watershedFingerprint`) and the GFMS grid (`mom:gridSignature`), which ties each aggregate to the grid and watersheds it was clipped with; the grid must match the GFMS data. Parameters and static tables ship with the software version (`dcterms:hasVersion`, `dcterms:isPartOf`).
+Each watershed is masked from the raster in every run; nothing is reused between runs except the previous summary and the previous final alert, which point to the earlier run that made them. Parameters and static tables ship with the software version (`dcterms:hasVersion`, `dcterms:isPartOf`).
 
-GFMS and GloFAS files state `mom:dataType`, `dcterms:format`, `mom:dataTime` (time the values refer to) and `generatedAtTime` (time the file was produced). The schema enforces this; `rules.shacl` checks the links between activities.
+Source files (GFMS, GloFAS and any other source) state `mom:dataType`, `dcterms:format`, `mom:dataTime` (time the values refer to) and `generatedAtTime` (time the file was produced). Each `mom:HazardScore` also states the `mom:dataTime` of its cycle and `wasDerivedFrom` the data it was computed from, so the final alert shows which time of each source it combined. The schema enforces the entries; `rules.shacl` checks the links between activities and that every hazard score derives from dated model data.
