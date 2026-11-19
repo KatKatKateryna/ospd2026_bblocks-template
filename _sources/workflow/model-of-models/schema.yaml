@@ -1,12 +1,12 @@
 $schema: https://json-schema.org/draft/2020-12/schema
 description: >-
-  Provenance chain of one MoM run. Per-watershed aggregation and hazard score accumulation are
-  always present; cell attribution only when the cell lookup is (re)built in the same run.
+  Provenance chain of one MoM run: per-watershed aggregation, hazard score accumulation and
+  final alert, each always present.
 allOf:
   - $ref: bblocks://ogc.ogc-utils.prov
 contains:
   $ref: '#/$defs/isProcessingActivity'
-minContains: 2
+minContains: 3
 items:
   allOf:
     - if:
@@ -28,22 +28,21 @@ items:
         $ref: bblocks://lu.rss-hydro.mom.processing-activity#/$defs/datedOrVersioned
     - $ref: bblocks://lu.rss-hydro.mom.processing-activity#/$defs/softwareVersioned
     - if:
-        $ref: '#/$defs/isCellLookup'
+        $ref: '#/$defs/isHazardScore'
       then:
-        required: [mom:watershedFingerprint, generatedAtTime, wasGeneratedBy, wasDerivedFrom]
+        required: [mom:dataType, mom:dataTime, generatedAtTime, wasDerivedFrom]
     - if:
         required: [mom:dataType]
       then:
         required: [dcterms:format]
         anyOf:
           - required: [dcterms:hasVersion]
-          - $ref: '#/$defs/isCellLookup'
           - required: [generatedAtTime, mom:dataTime]
 $defs:
   isProcessingActivity:
     $ref: bblocks://lu.rss-hydro.mom.ontology.activities#/$defs/isMomActivity
-  isCellLookup:
+  isHazardScore:
     required: [entityType]
     properties:
       entityType:
-        const: mom:WatershedCellLookup
+        const: mom:HazardScore

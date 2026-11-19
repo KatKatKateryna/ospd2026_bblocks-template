@@ -4,8 +4,8 @@ Activity types of the MoM flood workflow (subclasses of `mom:Geoprocessing`, its
 
 | Term | Generic operation |
 |---|---|
-| `mom:WatershedCellAttribution` | zonal masking (grid cells to zones) |
 | `mom:PerWatershedAggregation` | zonal statistics |
 | `mom:HazardScoreAccumulation` | index composition and classification |
+| `mom:FinalAlert` | multi-source fusion and change detection |
 
 The schema checks that a record of one of these types is a valid processing activity (`lu.rss-hydro.mom.processing-activity`).

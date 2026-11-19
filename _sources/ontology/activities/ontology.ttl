@@ -22,11 +22,6 @@ mom:Geoprocessing a owl:Class ;
     rdfs:label "Geoprocessing" ;
     rdfs:comment "Parent of all MoM activity types." .
 
-mom:WatershedCellAttribution a owl:Class ;
-    rdfs:subClassOf mom:Geoprocessing ;
-    rdfs:label "Per-watershed cell attribution" ;
-    rdfs:comment "Assigns grid cells to watersheds once, for reuse in aggregation." .
-
 mom:PerWatershedAggregation a owl:Class ;
     rdfs:subClassOf mom:Geoprocessing ;
     rdfs:label "Per-watershed aggregation" ;
@@ -37,23 +32,23 @@ mom:HazardScoreAccumulation a owl:Class ;
     rdfs:label "Hazard score accumulation" ;
     rdfs:comment "Updates flood duration and combines GloFAS and GFMS scores into a hazard score and alert per watershed." .
 
+mom:FinalAlert a owl:Class ;
+    rdfs:subClassOf mom:Geoprocessing ;
+    rdfs:label "Final alert" ;
+    rdfs:comment "Combines the hazard scores of all sources into one alert per watershed, with its status against the previous final alert." .
+
 # Entities
 
-mom:WatershedCellLookup a owl:Class ;
+mom:HazardScore a owl:Class ;
     rdfs:subClassOf prov:Entity ;
-    rdfs:label "Watershed cell lookup" ;
-    rdfs:comment "Grid cells and cell areas per watershed for one data source grid." .
+    rdfs:label "Hazard score" ;
+    rdfs:comment "Per-watershed hazard scores of one or more models for one cycle." .
 
 # Properties
 
 mom:dataType a owl:DatatypeProperty ;
     rdfs:label "data type" ;
     rdfs:comment "Source data type, e.g. GFMS, GloFAS." ;
-    rdfs:range xsd:string .
-
-mom:gridSignature a owl:DatatypeProperty ;
-    rdfs:label "grid signature" ;
-    rdfs:comment "Grid width, height and affine transform." ;
     rdfs:range xsd:string .
 
 mom:watershedFingerprint a owl:DatatypeProperty ;

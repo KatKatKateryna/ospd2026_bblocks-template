@@ -9,8 +9,8 @@ abstract: |
 # Description for this collection (optional)
 description: |
   W3C PROV profile and activity vocabulary for a minimal slice of the MoM workflow:
-  GFMS per-watershed cell attribution, GFMS per-watershed aggregation, and GloFAS + GFMS
-  hazard score accumulation.
+  GFMS per-watershed aggregation, GloFAS + GFMS hazard score accumulation, and the final
+  alert from the hazard scores of all sources.
 
 # Customize the following prefix (will be prepended to the path of the building blocks):
 identifier-prefix: lu.rss-hydro.mom.
