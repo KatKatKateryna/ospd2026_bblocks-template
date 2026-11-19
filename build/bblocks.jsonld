@@ -110,6 +110,10 @@
         "@id": "prof:isProfileOf",
         "@type": "@id"
       },
+      "isDescribedBy": {
+        "@id": "http://www.iana.org/assignments/relation/describedby",
+        "@type": "@id"
+      },
       "hasFormat": {
         "@id": "dct:hasFormat",
         "@type": "@id"
@@ -212,13 +216,13 @@
   "metaRegistry": "https://w3id.org/ogc/bblocks/meta-register.json",
   "name": "Building Blocks - RSS-Hydro Model of Models Building Blocks",
   "abstract": "Provenance building blocks for the RSS-Hydro Model of Models (MoM) flood prediction workflow,\nprofiled for the OGC Open Science Persistent Demonstrator (OSPD) 2026.\n",
-  "description": "W3C PROV profile and activity vocabulary for a minimal slice of the MoM workflow:\nGFMS per-watershed cell attribution, GFMS per-watershed aggregation, and GloFAS + GFMS\nhazard score accumulation.\n",
-  "modified": "2026-10-14T17:32:05.227568",
+  "description": "W3C PROV profile and activity vocabulary for a minimal slice of the MoM workflow:\nGFMS per-watershed aggregation, GloFAS + GFMS hazard score accumulation, and the final\nalert from the hazard scores of all sources.\n",
+  "modified": "2026-11-19T01:56:00.447972",
   "tooling": {
     "bblocks-postprocess": {
-      "commitId": "\"f470eb472692ab3e5845074dc94405af89b2f182",
-      "shortCommitId": "\"f470eb",
-      "date": "2026-10-14T12:20:08+00:00\""
+      "commitId": "\"2deb5c60331691186d997e4f6ae9aab18b548ce5",
+      "shortCommitId": "\"2deb5c",
+      "date": "2026-11-09T12:20:47+00:00\""
     }
   },
   "gitRepository": "https://github.com/KatKatKateryna/ospd2026_bblocks-template",
@@ -288,13 +292,13 @@
           "dct:conformsTo": "shacl:"
         }
       ],
+      "dateOfLastChange": "2026-11-19",
       "ldContext": {
         "prof:hasArtifact": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/processing-activity/context.jsonld",
         "prof:hasRole": "role:mapping",
         "dct:format": "application/ld+json",
         "dct:conformsTo": "https://www.w3.org/TR/json-ld11/"
       },
-      "dateOfLastChange": "2026-10-14",
       "schema": [
         {
           "prof:hasArtifact": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/processing-activity/schema.yaml",
@@ -316,13 +320,13 @@
       "validationPassed": true,
       "testOutputs": "https://github.com/KatKatKateryna/ospd2026_bblocks-template/blob/master/build/tests/rss-hydro/mom/processing-activity/",
       "documentation": {
-        "markdown": {
-          "mediatype": "text/markdown",
-          "url": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/generateddocs/markdown/rss-hydro/mom/processing-activity/index.md"
-        },
         "json-full": {
           "mediatype": "application/json",
           "url": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/generateddocs/json-full/rss-hydro/mom/processing-activity/index.json"
+        },
+        "markdown": {
+          "mediatype": "text/markdown",
+          "url": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/generateddocs/markdown/rss-hydro/mom/processing-activity/index.md"
         },
         "bblocks-viewer": {
           "mediatype": "text/html",
@@ -341,6 +345,7 @@
       "ontology": null,
       "rdfData": [],
       "isProfileOf": null,
+      "isDescribedBy": null,
       "skos:topConceptOf": {
         "@id": "https://katkatkateryna.github.io/ospd2026_bblocks-template/"
       }
@@ -377,6 +382,7 @@
           "dct:conformsTo": "shacl:"
         }
       ],
+      "dateOfLastChange": "2026-11-19",
       "ldContext": {
         "prof:hasArtifact": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/ontology/activities/context.jsonld",
         "prof:hasRole": "role:mapping",
@@ -389,7 +395,6 @@
         "dct:format": "text/turtle",
         "dct:conformsTo": "http://www.w3.org/2002/07/owl#Ontology"
       },
-      "dateOfLastChange": "2026-10-14",
       "schema": [
         {
           "prof:hasArtifact": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/ontology/activities/schema.yaml",
@@ -411,13 +416,13 @@
       "validationPassed": true,
       "testOutputs": "https://github.com/KatKatKateryna/ospd2026_bblocks-template/blob/master/build/tests/rss-hydro/mom/ontology/activities/",
       "documentation": {
-        "markdown": {
-          "mediatype": "text/markdown",
-          "url": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/generateddocs/markdown/rss-hydro/mom/ontology/activities/index.md"
-        },
         "json-full": {
           "mediatype": "application/json",
           "url": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/generateddocs/json-full/rss-hydro/mom/ontology/activities/index.json"
+        },
+        "markdown": {
+          "mediatype": "text/markdown",
+          "url": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/generateddocs/markdown/rss-hydro/mom/ontology/activities/index.md"
         },
         "bblocks-viewer": {
           "mediatype": "text/html",
@@ -435,6 +440,7 @@
       "openAPIDocument": null,
       "rdfData": [],
       "isProfileOf": null,
+      "isDescribedBy": null,
       "skos:topConceptOf": {
         "@id": "https://katkatkateryna.github.io/ospd2026_bblocks-template/"
       }
@@ -442,7 +448,7 @@
     {
       "itemIdentifier": "lu.rss-hydro.mom.workflow.model-of-models",
       "name": "Model of Models workflow",
-      "abstract": "Tested provenance example of a slice of the RSS-Hydro Model of Models flood workflow: GFMS cell attribution, per-watershed aggregation, and GloFAS + GFMS hazard score accumulation.",
+      "abstract": "Tested provenance example of a slice of the RSS-Hydro Model of Models flood workflow: GFMS per-watershed aggregation, GloFAS + GFMS hazard score accumulation, and the final alert from the hazard scores of all sources.",
       "status": "under-development",
       "dateTimeAddition": "2026-10-14T00:00:00Z",
       "itemClass": "schema",
@@ -481,13 +487,13 @@
           "dct:conformsTo": "shacl:"
         }
       ],
+      "dateOfLastChange": "2026-11-19",
       "ldContext": {
         "prof:hasArtifact": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/workflow/model-of-models/context.jsonld",
         "prof:hasRole": "role:mapping",
         "dct:format": "application/ld+json",
         "dct:conformsTo": "https://www.w3.org/TR/json-ld11/"
       },
-      "dateOfLastChange": "2026-10-14",
       "schema": [
         {
           "prof:hasArtifact": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/workflow/model-of-models/schema.yaml",
@@ -509,13 +515,13 @@
       "validationPassed": true,
       "testOutputs": "https://github.com/KatKatKateryna/ospd2026_bblocks-template/blob/master/build/tests/rss-hydro/mom/workflow/model-of-models/",
       "documentation": {
-        "markdown": {
-          "mediatype": "text/markdown",
-          "url": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/generateddocs/markdown/rss-hydro/mom/workflow/model-of-models/index.md"
-        },
         "json-full": {
           "mediatype": "application/json",
           "url": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/generateddocs/json-full/rss-hydro/mom/workflow/model-of-models/index.json"
+        },
+        "markdown": {
+          "mediatype": "text/markdown",
+          "url": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/generateddocs/markdown/rss-hydro/mom/workflow/model-of-models/index.md"
         },
         "bblocks-viewer": {
           "mediatype": "text/html",
@@ -534,6 +540,7 @@
       "ontology": null,
       "rdfData": [],
       "isProfileOf": null,
+      "isDescribedBy": null,
       "skos:topConceptOf": {
         "@id": "https://katkatkateryna.github.io/ospd2026_bblocks-template/"
       }

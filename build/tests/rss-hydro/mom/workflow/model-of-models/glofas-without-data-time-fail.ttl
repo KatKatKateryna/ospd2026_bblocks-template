@@ -14,7 +14,7 @@ run:aggregation a mom:PerWatershedAggregation ;
     prov:startedAtTime "2026-03-02T01:05:33+00:00"^^xsd:dateTime ;
     prov:used run:aggregation-parameters,
         run:gfms-bin,
-        run:gfms-cells ;
+        run:watersheds ;
     prov:wasAssociatedWith run:mom,
         run:rss-hydro,
         run:server .
@@ -36,13 +36,31 @@ run:attributes-clean a prov:Entity ;
 run:ecmwf a prov:Organization ;
     rdfs:label "ECMWF / CEMS (GloFAS)" .
 
-run:gfms-grid a prov:Entity ;
-    rdfs:label "GFMS Flood_byStor grid" ;
-    dcterms:format "GFMS Flood_byStor binary grid (float32)" ;
-    dcterms:hasVersion "0.0.1-alpha" ;
-    dcterms:isPartOf run:mom ;
-    mom:dataType "GFMS" ;
-    mom:gridSignature "[1440, 400, 0.25, 0.0, -180.0, 0.0, -0.25, 50.0]" .
+run:final-alert a mom:FinalAlert ;
+    rdfs:label "Final alert" ;
+    dcterms:isPartOf run:workflow-run ;
+    prov:endedAtTime "2026-03-02T01:12:52+00:00"^^xsd:dateTime ;
+    prov:generated run:final-alert-output ;
+    prov:startedAtTime "2026-03-02T01:12:48+00:00"^^xsd:dateTime ;
+    prov:used run:admin-centroids,
+        run:final-alert-prev,
+        run:final-attributes,
+        run:source-1-score,
+        run:source-2-score ;
+    prov:wasAssociatedWith run:mom,
+        run:rss-hydro,
+        run:server .
+
+run:final-alert-output a prov:Entity ;
+    rdfs:label "Final_Alert/Final_Alert_2026030200.csv" ;
+    dcterms:format "text/csv" ;
+    prov:generatedAtTime "2026-03-02T01:12:52+00:00"^^xsd:dateTime ;
+    prov:wasDerivedFrom run:admin-centroids,
+        run:final-alert-prev,
+        run:final-attributes,
+        run:source-1-score,
+        run:source-2-score ;
+    prov:wasGeneratedBy run:final-alert .
 
 run:glofas-txt a prov:Entity ;
     rdfs:label "threspoints_2026030200.txt" ;
@@ -60,15 +78,32 @@ run:hazard-parameters a prov:Entity ;
     dcterms:isPartOf run:mom ;
     mom:gfmsDurationAreaThresholdKm2 50 .
 
+run:source-1-data a prov:Entity ;
+    rdfs:label "Source 1 grid, cycle 2026030118" ;
+    dcterms:format "GRIB2" ;
+    dcat:downloadURL <https://example.org/source-1/2026030118.grb2> ;
+    prov:generatedAtTime "2026-03-01T23:47:05+00:00"^^xsd:dateTime ;
+    prov:wasAttributedTo run:provider-1 ;
+    mom:dataTime "2026-03-01T18:00:00+00:00"^^xsd:dateTime ;
+    mom:dataType "Source 1" .
+
+run:source-2-data a prov:Entity ;
+    rdfs:label "Source 2 grid 20260228" ;
+    dcterms:format "GeoTIFF" ;
+    dcat:downloadURL <https://example.org/source-2/20260228.tif> ;
+    prov:generatedAtTime "2026-03-01T02:10:44+00:00"^^xsd:dateTime ;
+    prov:wasAttributedTo run:provider-1 ;
+    mom:dataTime "2026-02-28T00:00:00+00:00"^^xsd:dateTime ;
+    mom:dataType "Source 2" .
+
 run:umd a prov:Organization ;
     rdfs:label "University of Maryland (GFMS)" .
 
-run:watersheds a prov:Entity ;
-    rdfs:label "Watershed_pfaf_id.shp" ;
-    dcterms:format "ESRI Shapefile" ;
-    dcterms:hasVersion "0.0.0" ;
-    prov:generatedAtTime "2026-01-15T00:00:00+00:00"^^xsd:dateTime ;
-    mom:watershedFingerprint "a09161ac707ef1d0355e92e730c8fe31e127149b803321bc988b3232058eea17" .
+run:admin-centroids a prov:Entity ;
+    rdfs:label "data/Admin0_1_union_centroid.csv" ;
+    dcterms:format "text/csv" ;
+    dcterms:hasVersion "0.0.1-alpha" ;
+    dcterms:isPartOf run:mom .
 
 run:attributes a prov:Entity ;
     rdfs:label "data/Attributes.csv" ;
@@ -76,16 +111,11 @@ run:attributes a prov:Entity ;
     dcterms:hasVersion "0.0.1-alpha" ;
     dcterms:isPartOf run:mom .
 
-run:final-attributes a prov:Entity ;
-    rdfs:label "GFMS_MoM/Final_Attributes_20260302.csv" ;
+run:final-alert-prev a prov:Entity ;
+    rdfs:label "Final_Alert/Final_Alert_2026030118.csv" ;
     dcterms:format "text/csv" ;
-    prov:generatedAtTime "2026-03-02T01:12:47+00:00"^^xsd:dateTime ;
-    prov:wasDerivedFrom run:attributes,
-        run:gfms-summary,
-        run:glofas-points,
-        run:resilience,
-        run:weights ;
-    prov:wasGeneratedBy run:hazard .
+    prov:generatedAtTime "2026-03-01T19:13:02+00:00"^^xsd:dateTime ;
+    prov:wasGeneratedBy <https://example.org/mom/run/2026030118/final-alert> .
 
 run:gfms-bin a prov:Entity ;
     rdfs:label "Flood_byStor_2026030200.bin" ;
@@ -95,18 +125,7 @@ run:gfms-bin a prov:Entity ;
     prov:wasAttributedTo run:umd ;
     mom:dataTime "2026-03-02T00:00:00+00:00"^^xsd:dateTime ;
     mom:dataType "GFMS" ;
-    mom:gfmsNodataValue -9999 ;
-    mom:gridSignature "[1440, 400, 0.25, 0.0, -180.0, 0.0, -0.25, 50.0]" .
-
-run:gfms-cells a mom:WatershedCellLookup ;
-    rdfs:label "gfms_watershed_cells.npz" ;
-    dcterms:format "NumPy .npz cell lookup" ;
-    prov:generatedAtTime "2026-03-01T00:15:11+00:00"^^xsd:dateTime ;
-    prov:wasDerivedFrom run:gfms-grid,
-        run:watersheds ;
-    prov:wasGeneratedBy <https://example.org/mom/run/2026030100/cell-attribution> ;
-    mom:dataType "GFMS" ;
-    mom:watershedFingerprint "a09161ac707ef1d0355e92e730c8fe31e127149b803321bc988b3232058eea17" .
+    mom:gfmsNodataValue -9999 .
 
 run:gfms-summary a prov:Entity ;
     rdfs:label "GFMS_summary/Flood_byStor_2026030200.csv (duration recalculated)" ;
@@ -133,11 +152,37 @@ run:glofas-points a prov:Entity ;
     mom:dataType "GloFAS" ;
     mom:glofasNodataValue -9999 .
 
+run:provider-1 a prov:Organization ;
+    rdfs:label "Provider of sources 1 and 2" .
+
 run:resilience a prov:Entity ;
     rdfs:label "data/Resilience_Index.csv" ;
     dcterms:format "text/csv" ;
     dcterms:hasVersion "0.0.1-alpha" ;
     dcterms:isPartOf run:mom .
+
+run:source-1-score a mom:HazardScore ;
+    rdfs:label "Source 1 hazard scores, cycle 2026030118" ;
+    dcterms:format "text/csv" ;
+    prov:generatedAtTime "2026-03-02T00:52:19+00:00"^^xsd:dateTime ;
+    prov:wasDerivedFrom run:source-1-data ;
+    mom:dataTime "2026-03-01T18:00:00+00:00"^^xsd:dateTime ;
+    mom:dataType "Source 1" .
+
+run:source-2-score a mom:HazardScore ;
+    rdfs:label "Source 2 hazard scores 20260228" ;
+    dcterms:format "text/csv" ;
+    prov:generatedAtTime "2026-03-01T04:12:30+00:00"^^xsd:dateTime ;
+    prov:wasDerivedFrom run:source-2-data ;
+    mom:dataTime "2026-02-28T00:00:00+00:00"^^xsd:dateTime ;
+    mom:dataType "Source 2" .
+
+run:watersheds a prov:Entity ;
+    rdfs:label "Watershed_pfaf_id.shp" ;
+    dcterms:format "ESRI Shapefile" ;
+    dcterms:hasVersion "0.0.0" ;
+    prov:generatedAtTime "2026-01-15T00:00:00+00:00"^^xsd:dateTime ;
+    mom:watershedFingerprint "a09161ac707ef1d0355e92e730c8fe31e127149b803321bc988b3232058eea17" .
 
 run:weights a prov:Entity ;
     rdfs:label "data/GFMS_Weightage.csv" ;
@@ -145,20 +190,12 @@ run:weights a prov:Entity ;
     dcterms:hasVersion "0.0.1-alpha" ;
     dcterms:isPartOf run:mom .
 
-run:workflow-run a mom:WorkflowRun ;
-    rdfs:label "MoM workflow run, 2026-03-02 00:00" ;
-    prov:endedAtTime "2026-03-02T01:12:47+00:00"^^xsd:dateTime ;
-    prov:startedAtTime "2026-03-02T01:05:33+00:00"^^xsd:dateTime ;
-    prov:wasAssociatedWith run:mom,
-        run:rss-hydro,
-        run:server .
-
 run:gfms-aggregates a prov:Entity ;
     rdfs:label "Processing/gfms/Flood_byStor_2026030200.csv (per-watershed aggregates, duration not yet recalculated)" ;
     dcterms:format "text/csv" ;
     prov:generatedAtTime "2026-03-02T01:05:41+00:00"^^xsd:dateTime ;
     prov:wasDerivedFrom run:gfms-bin,
-        run:gfms-cells ;
+        run:watersheds ;
     prov:wasGeneratedBy run:aggregation ;
     mom:dataTime "2026-03-02T00:00:00+00:00"^^xsd:dateTime ;
     mom:dataType "GFMS" .
@@ -181,6 +218,28 @@ run:hazard a mom:HazardScoreAccumulation ;
     prov:wasAssociatedWith run:mom,
         run:rss-hydro,
         run:server .
+
+run:workflow-run a mom:WorkflowRun ;
+    rdfs:label "MoM workflow run, 2026-03-02 00:00" ;
+    prov:endedAtTime "2026-03-02T01:12:52+00:00"^^xsd:dateTime ;
+    prov:startedAtTime "2026-03-02T01:05:33+00:00"^^xsd:dateTime ;
+    prov:wasAssociatedWith run:mom,
+        run:rss-hydro,
+        run:server .
+
+run:final-attributes a mom:HazardScore ;
+    rdfs:label "GFMS_MoM/Final_Attributes_20260302.csv" ;
+    dcterms:format "text/csv" ;
+    prov:generatedAtTime "2026-03-02T01:12:47+00:00"^^xsd:dateTime ;
+    prov:wasDerivedFrom run:attributes,
+        run:gfms-summary,
+        run:glofas-points,
+        run:resilience,
+        run:weights ;
+    prov:wasGeneratedBy run:hazard ;
+    mom:dataTime "2026-03-02T00:00:00+00:00"^^xsd:dateTime ;
+    mom:dataType "GFMS",
+        "GloFAS" .
 
 run:rss-hydro a prov:Organization ;
     rdfs:label "RSS-Hydro" .

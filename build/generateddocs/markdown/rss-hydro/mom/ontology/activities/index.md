@@ -15,9 +15,9 @@ Activity types of the MoM flood workflow (subclasses of `mom:Geoprocessing`, its
 
 | Term | Generic operation |
 |---|---|
-| `mom:WatershedCellAttribution` | zonal masking (grid cells to zones) |
 | `mom:PerWatershedAggregation` | zonal statistics |
 | `mom:HazardScoreAccumulation` | index composition and classification |
+| `mom:FinalAlert` | multi-source fusion and change detection |
 
 The schema checks that a record of one of these types is a valid processing activity (`lu.rss-hydro.mom.processing-activity`).
 
@@ -88,12 +88,17 @@ $defs:
     properties:
       activityType:
         enum:
-        - mom:WatershedCellAttribution
         - mom:PerWatershedAggregation
         - mom:HazardScoreAccumulation
+        - mom:FinalAlert
 x-jsonld-prefixes:
   mom: https://rss-hydro.lu/ns/mom/
   dcterms: http://purl.org/dc/terms/
+x-bblocks-metadata:
+  itemIdentifier: lu.rss-hydro.mom.ontology.activities
+  register: https://katkatkateryna.github.io/ospd2026_bblocks-template/build/register.json
+  version: '0.1'
+  dateOfLastChange: '2026-10-14'
 
 ```
 

@@ -1,5 +1,5 @@
 Validation report for lu.rss-hydro.mom.workflow.model-of-models - Model of Models workflow
-Generated 2026-10-14T17:32:14.510483+00:00
+Generated 2026-11-19T01:56:31.790125+00:00
 === General ===
 Test was expected to fail and it did.
 === End General ===
@@ -17,31 +17,10 @@ Output Turtle activity-without-end-time-fail.ttl created
 ValidationError: 'endedAtTime' is a required property
 
 Failed validating 'required' in schema['items']['allOf'][0]['then']['allOf'][0]['allOf'][0]:
-    {'$defs': {'datedOrVersioned': {'description': 'An inline entity '
-                                                   'states generatedAtTime '
-                                                   'or dcterms:hasVersion.',
-                                    'if': {'type': 'object'},
-                                    'then': {'anyOf': [{'required': ['generatedAtTime']},
-                                                       {'required': ['dcterms:hasVersion']}]}},
-               'softwareVersioned': {'description': 'An inline software '
-                                                    'agent states '
-                                                    'dcterms:hasVersion.',
-                                     'if': {'properties': {'agentType': {'anyOf': [{'const': 'prov:SoftwareAgent'},
-                                                                                   {'contains': {'const': 'prov:SoftwareAgent'},
-                                                                                    'type': 'array'}]}},
-                                            'required': ['agentType'],
-                                            'type': 'object'},
-                                     'then': {'required': ['dcterms:hasVersion']}}},
-     '$schema': 'https://json-schema.org/draft/2020-12/schema',
-     'allOf': [{'$ref': 'https://ogcincubator.github.io/bblock-prov-schema/build/annotated/ogc-utils/prov-activity/schema.yaml'}],
+    {'$schema': 'https://json-schema.org/draft/2020-12/schema',
      'description': 'One processing activity with its required PROV '
                     'fields.',
-     'properties': {'used': {'anyOf': [{'$ref': '#/$defs/datedOrVersioned'},
-                                       {'items': {'$ref': '#/$defs/datedOrVersioned'},
-                                        'type': 'array'}]},
-                    'wasAssociatedWith': {'anyOf': [{'$ref': '#/$defs/softwareVersioned'},
-                                                    {'items': {'$ref': '#/$defs/softwareVersioned'},
-                                                     'type': 'array'}]}},
+     'allOf': [{'$ref': 'https://ogcincubator.github.io/bblock-prov-schema/build/annotated/ogc-utils/prov-activity/schema.yaml'}],
      'required': ['id',
                   'activityType',
                   'name',
@@ -50,15 +29,36 @@ Failed validating 'required' in schema['items']['allOf'][0]['then']['allOf'][0][
                   'used',
                   'generated',
                   'wasAssociatedWith'],
-     'x-jsonld-prefixes': {'dcterms': 'http://purl.org/dc/terms/'}}
+     'properties': {'used': {'anyOf': [{'$ref': '#/$defs/datedOrVersioned'},
+                                       {'type': 'array',
+                                        'items': {'$ref': '#/$defs/datedOrVersioned'}}]},
+                    'wasAssociatedWith': {'anyOf': [{'$ref': '#/$defs/softwareVersioned'},
+                                                    {'type': 'array',
+                                                     'items': {'$ref': '#/$defs/softwareVersioned'}}]}},
+     '$defs': {'datedOrVersioned': {'description': 'An inline entity '
+                                                   'states generatedAtTime '
+                                                   'or dcterms:hasVersion.',
+                                    'if': {'type': 'object'},
+                                    'then': {'anyOf': [{'required': ['generatedAtTime']},
+                                                       {'required': ['dcterms:hasVersion']}]}},
+               'softwareVersioned': {'description': 'An inline software '
+                                                    'agent states '
+                                                    'dcterms:hasVersion.',
+                                     'if': {'type': 'object',
+                                            'required': ['agentType'],
+                                            'properties': {'agentType': {'anyOf': [{'const': 'prov:SoftwareAgent'},
+                                                                                   {'type': 'array',
+                                                                                    'contains': {'const': 'prov:SoftwareAgent'}}]}}},
+                                     'then': {'required': ['dcterms:hasVersion']}}},
+     'x-jsonld-prefixes': {'dcterms': 'http://purl.org/dc/terms/'},
+     'x-bblocks-metadata': {'itemIdentifier': 'lu.rss-hydro.mom.processing-activity',
+                            'register': 'https://katkatkateryna.github.io/ospd2026_bblocks-template/build/register.json',
+                            'version': '0.1',
+                            'dateOfLastChange': '2026-10-14'}}
 
-On instance[20]:
-    {'activityType': 'mom:HazardScoreAccumulation',
-     'dcterms:isPartOf': 'run:workflow-run',
-     'generated': ['run:gfms-summary',
-                   'run:final-attributes',
-                   'run:attributes-clean'],
-     'id': 'run:hazard',
+On instance[19]:
+    {'id': 'run:hazard',
+     'activityType': 'mom:HazardScoreAccumulation',
      'name': 'GloFAS + GFMS hazard score accumulation',
      'startedAtTime': '2026-03-02T01:12:40Z',
      'used': ['run:gfms-aggregates',
@@ -68,84 +68,82 @@ On instance[20]:
               'run:resilience',
               'run:weights',
               'run:hazard-parameters'],
-     'wasAssociatedWith': ['run:mom', 'run:rss-hydro', 'run:server']}
+     'generated': ['run:gfms-summary',
+                   'run:final-attributes',
+                   'run:attributes-clean'],
+     'wasAssociatedWith': ['run:mom', 'run:rss-hydro', 'run:server'],
+     'dcterms:isPartOf': 'run:workflow-run'}
 === End JSON Schema ===
 
 === SHACL ===
 Using SHACL closure graph sources (declared closures, ontologies and RDF data resources):
  - /github/workspace/_sources/ontology/activities/ontology.ttl
  - https://www.w3.org/ns/prov-o
-Validation result for _sources/workflow/model-of-models/rules.shacl:
-  Validation Report
-  Conforms: True
-  
+Validation result for _sources/workflow/model-of-models/rules.shacl: no results
 Focus nodes for _sources/workflow/model-of-models/rules.shacl:
- - Shape <https://rss-hydro.lu/ns/mom/rules/#aggregationUsedCellLookup>/sh:property/sh:qualifiedValueShape: *none*
- - Shape <https://rss-hydro.lu/ns/mom/rules/#aggregationUsedCellLookup>: run:aggregation
- - Shape <https://rss-hydro.lu/ns/mom/rules/#hazardAccumulationUsedAggregate>/sh:property/sh:qualifiedValueShape: *none*
+ - Shape <https://rss-hydro.lu/ns/mom/rules/#finalAlertUsedAccumulatedScore>/sh:property/sh:qualifiedValueShape: *none*
  - Shape <https://rss-hydro.lu/ns/mom/rules/#hazardAccumulationUsedAggregate>: run:hazard
- - Shape <https://rss-hydro.lu/ns/mom/rules/#gridMatchesLookup>: run:aggregation
+ - Shape <https://rss-hydro.lu/ns/mom/rules/#finalAlertUsedAccumulatedScore>: run:final-alert
+ - Shape <https://rss-hydro.lu/ns/mom/rules/#hazardAccumulationUsedAggregate>/sh:property/sh:qualifiedValueShape: *none*
+ - Shape <https://rss-hydro.lu/ns/mom/rules/#hazardScoreDerivedFromDatedData>: run:source-2-score,run:source-1-score,run:final-attributes
 
-Validation result for https://ogcincubator.github.io/cross-domain-model/_sources/prov/shapes.shacl:
-  Validation Report
-  Conforms: True
-  
+Validation result for https://ogcincubator.github.io/cross-domain-model/_sources/prov/shapes.shacl: no results
 Focus nodes for https://ogcincubator.github.io/cross-domain-model/_sources/prov/shapes.shacl:
- - Shape <https://www.ogc.org/rules/prov/#prop-activity>: *none*
- - Shape <https://www.ogc.org/rules/prov/#prop-alternateOf>: *none*
- - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedQuotation>: *none*
- - Shape <https://www.ogc.org/rules/prov/#prop-wasQuotedFrom>: *none*
- - Shape <https://www.ogc.org/rules/prov/#prop-hadUsage>: *none*
- - Shape <https://www.ogc.org/rules/prov/#prop-wasInvalidatedBy>: *none*
- - Shape <https://www.ogc.org/rules/prov/#prop-wasDerivedFrom>: *none*
- - Shape <https://www.ogc.org/rules/prov/#prop-used>: *none*
- - Shape <https://www.ogc.org/rules/prov/#Usage-shape>: *none*
- - Shape <https://www.ogc.org/rules/prov/#prop-wasRevisionOf>: *none*
- - Shape <https://www.ogc.org/rules/prov/#InstantaneousEvent-shape>: *none*
- - Shape <https://www.ogc.org/rules/prov/#prop-wasEndedBy>: *none*
  - Shape <https://www.ogc.org/rules/prov/#End-shape>: *none*
- - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedRevision>: *none*
- - Shape <https://www.ogc.org/rules/prov/#prop-hadGeneration>: *none*
- - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedAttribution>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-wasInfluencedBy>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-used>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-wasQuotedFrom>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-actedOnBehalfOf>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedCommunication>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedStart>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#InstantaneousEvent-shape>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-alternateOf>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-wasInvalidatedBy>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-entity>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-specializationOf>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#Generation-shape>: *none*
  - Shape <https://www.ogc.org/rules/prov/#prop-hadPlan>: *none*
  - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedUsage>: *none*
- - Shape <https://www.ogc.org/rules/prov/#prop-hadMember>: *none*
- - Shape <https://www.ogc.org/rules/prov/#prop-wasAssociatedWith>: *none*
- - Shape <https://www.ogc.org/rules/prov/#prop-actedOnBehalfOf>: *none*
- - Shape <https://www.ogc.org/rules/prov/#Invalidation-shape>: *none*
- - Shape <https://www.ogc.org/rules/prov/#prop-influencer>: *none*
- - Shape <https://www.ogc.org/rules/prov/#prop-hadPrimarySource>: *none*
- - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedDelegation>: *none*
- - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedCommunication>: *none*
- - Shape <https://www.ogc.org/rules/prov/#prop-generated>: *none*
- - Shape <https://www.ogc.org/rules/prov/#Plan-shape>: *none*
- - Shape <https://www.ogc.org/rules/prov/#Entity-shape>: run:weights,run:gfms-summary-prev,run:glofas-points,run:attributes,run:gfms-summary,run:gfms-aggregates,run:aggregation-parameters,run:hazard-parameters,run:gfms-grid,run:gfms-bin,run:resilience,run:glofas-txt,run:watersheds,run:attributes-clean,run:final-attributes
- - Shape <https://www.ogc.org/rules/prov/#prop-specializationOf>: *none*
- - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedPrimarySource>: *none*
- - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedGeneration>: *none*
- - Shape <https://www.ogc.org/rules/prov/#prop-wasInfluencedBy>: *none*
- - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedStart>: *none*
- - Shape <https://www.ogc.org/rules/prov/#Collection-shape>: *none*
- - Shape <https://www.ogc.org/rules/prov/#prop-wasInformedBy>: *none*
- - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedInfluence>: *none*
- - Shape <https://www.ogc.org/rules/prov/#prop-entity>: *none*
- - Shape <https://www.ogc.org/rules/prov/#prop-hadActivity>: *none*
- - Shape <https://www.ogc.org/rules/prov/#prop-wasGeneratedBy>: *none*
- - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedInvalidation>: *none*
- - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedAssociation>: *none*
- - Shape <https://www.ogc.org/rules/prov/#prop-wasAttributedTo>: *none*
- - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedDerivation>: *none*
  - Shape <https://www.ogc.org/rules/prov/#prop-wasStartedBy>: *none*
- - Shape <https://www.ogc.org/rules/prov/#EmptyCollection-shape>: *none*
- - Shape <https://www.ogc.org/rules/prov/#Activity-shape>: *none*
- - Shape <https://www.ogc.org/rules/prov/#Generation-shape>: *none*
- - Shape <https://www.ogc.org/rules/prov/#prop-agent>: *none*
- - Shape <https://www.ogc.org/rules/prov/#prop-invalidated>: *none*
- - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedEnd>: *none*
- - Shape <https://www.ogc.org/rules/prov/#Bundle-shape>: *none*
- - Shape <https://www.ogc.org/rules/prov/#prop-atLocation>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedRevision>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#Plan-shape>: *none*
  - Shape <https://www.ogc.org/rules/prov/#Start-shape>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-wasAttributedTo>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedAttribution>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-hadGeneration>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedAssociation>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-generated>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-wasDerivedFrom>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-wasEndedBy>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-wasRevisionOf>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-hadUsage>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-wasGeneratedBy>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedGeneration>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#EmptyCollection-shape>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-atLocation>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#Invalidation-shape>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedDelegation>: *none*
  - Shape <https://www.ogc.org/rules/prov/#prop-hadRole>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-hadActivity>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedInvalidation>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedPrimarySource>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedInfluence>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#Usage-shape>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedDerivation>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-agent>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedEnd>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-wasInformedBy>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#Activity-shape>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#Entity-shape>: run:attributes,run:final-alert-output,run:gfms-summary-prev,run:attributes-clean,run:source-1-data,run:source-2-data,run:aggregation-parameters,run:final-alert-prev,run:weights,run:glofas-points,run:hazard-parameters,run:resilience,run:watersheds,run:gfms-aggregates,run:admin-centroids,run:glofas-txt,run:gfms-summary,run:gfms-bin
+ - Shape <https://www.ogc.org/rules/prov/#prop-activity>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#Collection-shape>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-hadPrimarySource>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#Bundle-shape>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-influencer>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-invalidated>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-qualifiedQuotation>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-wasAssociatedWith>: *none*
+ - Shape <https://www.ogc.org/rules/prov/#prop-hadMember>: *none*
 
 === End SHACL ===
 

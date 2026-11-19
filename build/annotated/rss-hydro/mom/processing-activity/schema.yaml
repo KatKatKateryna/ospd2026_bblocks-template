@@ -53,3 +53,8 @@ $defs:
       - dcterms:hasVersion
 x-jsonld-prefixes:
   dcterms: http://purl.org/dc/terms/
+x-bblocks-metadata:
+  itemIdentifier: lu.rss-hydro.mom.processing-activity
+  register: https://katkatkateryna.github.io/ospd2026_bblocks-template/build/register.json
+  version: '0.1'
+  dateOfLastChange: '2026-10-14'

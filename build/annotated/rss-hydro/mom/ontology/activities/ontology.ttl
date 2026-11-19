@@ -15,6 +15,16 @@ mom:Advisory a skos:Concept ;
     skos:prefLabel "Advisory" ;
     mom:minHazardScore 35 .
 
+mom:FinalAlert a owl:Class ;
+    rdfs:label "Final alert" ;
+    rdfs:comment "Combines the hazard scores of all sources into one alert per watershed, with its status against the previous final alert." ;
+    rdfs:subClassOf mom:Geoprocessing .
+
+mom:HazardScore a owl:Class ;
+    rdfs:label "Hazard score" ;
+    rdfs:comment "Per-watershed hazard scores of one or more models for one cycle." ;
+    rdfs:subClassOf prov:Entity .
+
 mom:HazardScoreAccumulation a owl:Class ;
     rdfs:label "Hazard score accumulation" ;
     rdfs:comment "Updates flood duration and combines GloFAS and GFMS scores into a hazard score and alert per watershed." ;
@@ -40,16 +50,6 @@ mom:Watch a skos:Concept ;
     skos:prefLabel "Watch" ;
     mom:minHazardScore 60 .
 
-mom:WatershedCellAttribution a owl:Class ;
-    rdfs:label "Per-watershed cell attribution" ;
-    rdfs:comment "Assigns grid cells to watersheds once, for reuse in aggregation." ;
-    rdfs:subClassOf mom:Geoprocessing .
-
-mom:WatershedCellLookup a owl:Class ;
-    rdfs:label "Watershed cell lookup" ;
-    rdfs:comment "Grid cells and cell areas per watershed for one data source grid." ;
-    rdfs:subClassOf prov:Entity .
-
 mom:WorkflowRun a owl:Class ;
     rdfs:label "Workflow run" ;
     rdfs:comment "One execution of the MoM workflow." ;
@@ -63,11 +63,6 @@ mom:dataTime a owl:DatatypeProperty ;
 mom:dataType a owl:DatatypeProperty ;
     rdfs:label "data type" ;
     rdfs:comment "Source data type, e.g. GFMS, GloFAS." ;
-    rdfs:range xsd:string .
-
-mom:gridSignature a owl:DatatypeProperty ;
-    rdfs:label "grid signature" ;
-    rdfs:comment "Grid width, height and affine transform." ;
     rdfs:range xsd:string .
 
 mom:minHazardScore a owl:DatatypeProperty ;

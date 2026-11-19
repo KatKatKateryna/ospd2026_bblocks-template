@@ -2,8 +2,8 @@
 @prefix dcat: <http://www.w3.org/ns/dcat#> .
 @prefix dct: <http://purl.org/dc/terms/> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
-@prefix ns1: <http://www.w3.org/ns/oa#> .
-@prefix ns2: <http://www.iana.org/assignments/> .
+@prefix ns1: <http://www.iana.org/assignments/> .
+@prefix ns2: <http://www.w3.org/ns/oa#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix prof: <http://www.w3.org/ns/dx/prof/> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
@@ -16,18 +16,18 @@
 
 <https://katkatkateryna.github.io/ospd2026_bblocks-template/build/bblocks.ttl> a prov:Entity ;
     dct:format "text/turtle" ;
-    prov:wasAttributedTo _:N9049e991155e4d12bfe7d2c7d2f6b938 ;
+    prov:wasAttributedTo _:N739a49aff46b416d8e96a3952dc3172f ;
     prov:wasGeneratedBy [ a prov:Activity ;
-            prov:endedAtTime "2026-10-14T17:32:16.439721"^^xsd:dateTime ;
-            prov:startedAtTime "2026-10-14T17:32:16.258624"^^xsd:dateTime ;
+            prov:endedAtTime "2026-11-19T01:58:14.675477"^^xsd:dateTime ;
+            prov:startedAtTime "2026-11-19T01:58:14.543958"^^xsd:dateTime ;
             prov:used [ a prov:Entity ;
-                    dct:format "application/json" ;
-                    dct:hasVersion "git:8b01c81561451b9e970fd4d8da8a8e21d5adfaf5" ;
-                    rdfs:seeAlso <https://katkatkateryna.github.io/ospd2026_bblocks-template/build/register.json> ],
-                [ a prov:Entity ;
                     dct:format "application/yaml" ;
-                    rdfs:seeAlso <file:///src/ogc/bblocks/register-context.yaml> ] ;
-            prov:wasAssociatedWith _:N9049e991155e4d12bfe7d2c7d2f6b938 ] .
+                    rdfs:seeAlso <file:///src/ogc/bblocks/register-context.yaml> ],
+                [ a prov:Entity ;
+                    dct:format "application/json" ;
+                    dct:hasVersion "git:27a9157fe49883657fb296f5b19790dc7975087c" ;
+                    rdfs:seeAlso <https://katkatkateryna.github.io/ospd2026_bblocks-template/build/register.json> ] ;
+            prov:wasAssociatedWith _:N739a49aff46b416d8e96a3952dc3172f ] .
 
 <bblocks://lu.rss-hydro.mom.ontology.activities> a skos:Concept,
         dcat:Dataset,
@@ -36,14 +36,14 @@
     rdfs:label "MoM workflow activity types" ;
     dct:abstract "Activity and entity types emitted by the RSS-Hydro Model of Models flood workflow, as subclasses of prov:Activity and prov:Entity."^^<https://www.w3.org/ns/iana/media-types/text/markdown> ;
     dct:created "2026-10-14T00:00:00+00:00"^^xsd:dateTime ;
-    dct:description [ dct:format "text/html" ;
-            rdfs:isDefinedBy <https://katkatkateryna.github.io/ospd2026_bblocks-template/bblock/lu.rss-hydro.mom.ontology.activities> ],
-        [ dct:format "application/json" ;
+    dct:description [ dct:format "application/json" ;
             rdfs:isDefinedBy <https://katkatkateryna.github.io/ospd2026_bblocks-template/build/generateddocs/json-full/rss-hydro/mom/ontology/activities/index.json> ],
         [ dct:format "text/markdown" ;
-            rdfs:isDefinedBy <https://katkatkateryna.github.io/ospd2026_bblocks-template/build/generateddocs/markdown/rss-hydro/mom/ontology/activities/index.md> ] ;
+            rdfs:isDefinedBy <https://katkatkateryna.github.io/ospd2026_bblocks-template/build/generateddocs/markdown/rss-hydro/mom/ontology/activities/index.md> ],
+        [ dct:format "text/html" ;
+            rdfs:isDefinedBy <https://katkatkateryna.github.io/ospd2026_bblocks-template/bblock/lu.rss-hydro.mom.ontology.activities> ] ;
     dct:hasVersion "0.1" ;
-    dct:modified "2026-10-14"^^xsd:date ;
+    dct:modified "2026-11-19"^^xsd:date ;
     skos:inScheme <https://katkatkateryna.github.io/ospd2026_bblocks-template/> ;
     skos:prefLabel "MoM workflow activity types" ;
     skos:topConceptOf <https://katkatkateryna.github.io/ospd2026_bblocks-template/> ;
@@ -52,22 +52,22 @@
         "ospd",
         "prov",
         "provenance" ;
-    prof:hasResource [ dct:conformsTo owl:Ontology ;
-            dct:format "text/turtle" ;
-            prof:hasArtifact <https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/ontology/activities/ontology.ttl> ;
-            prof:hasRole role:specification ],
-        [ dct:conformsTo <https://json-schema.org/draft/2020-12/schema> ;
+    prof:hasResource [ dct:conformsTo <https://json-schema.org/draft/2020-12/schema> ;
             dct:format "application/yaml" ;
             prof:hasArtifact <https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/ontology/activities/schema.yaml> ;
+            prof:hasRole role:schema ],
+        [ dct:conformsTo <https://json-schema.org/draft/2020-12/schema> ;
+            dct:format "application/json" ;
+            prof:hasArtifact <https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/ontology/activities/schema.json> ;
             prof:hasRole role:schema ],
         [ dct:conformsTo <https://www.w3.org/TR/json-ld11/> ;
             dct:format "application/ld+json" ;
             prof:hasArtifact <https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/ontology/activities/context.jsonld> ;
             prof:hasRole role:mapping ],
-        [ dct:conformsTo <https://json-schema.org/draft/2020-12/schema> ;
-            dct:format "application/json" ;
-            prof:hasArtifact <https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/ontology/activities/schema.json> ;
-            prof:hasRole role:schema ],
+        [ dct:conformsTo owl:Ontology ;
+            dct:format "text/turtle" ;
+            prof:hasArtifact <https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/ontology/activities/ontology.ttl> ;
+            prof:hasRole role:specification ],
         [ dct:conformsTo shacl: ;
             dct:format "text/turtle" ;
             rdfs:seeAlso <bblocks://ogc.model.cross-domain.prov> ;
@@ -85,16 +85,16 @@
         bblocks:BBlock,
         bblocks:Schema ;
     rdfs:label "Model of Models workflow" ;
-    dct:abstract "Tested provenance example of a slice of the RSS-Hydro Model of Models flood workflow: GFMS cell attribution, per-watershed aggregation, and GloFAS + GFMS hazard score accumulation."^^<https://www.w3.org/ns/iana/media-types/text/markdown> ;
+    dct:abstract "Tested provenance example of a slice of the RSS-Hydro Model of Models flood workflow: GFMS per-watershed aggregation, GloFAS + GFMS hazard score accumulation, and the final alert from the hazard scores of all sources."^^<https://www.w3.org/ns/iana/media-types/text/markdown> ;
     dct:created "2026-10-14T00:00:00+00:00"^^xsd:dateTime ;
     dct:description [ dct:format "text/html" ;
             rdfs:isDefinedBy <https://katkatkateryna.github.io/ospd2026_bblocks-template/bblock/lu.rss-hydro.mom.workflow.model-of-models> ],
-        [ dct:format "text/markdown" ;
-            rdfs:isDefinedBy <https://katkatkateryna.github.io/ospd2026_bblocks-template/build/generateddocs/markdown/rss-hydro/mom/workflow/model-of-models/index.md> ],
         [ dct:format "application/json" ;
-            rdfs:isDefinedBy <https://katkatkateryna.github.io/ospd2026_bblocks-template/build/generateddocs/json-full/rss-hydro/mom/workflow/model-of-models/index.json> ] ;
+            rdfs:isDefinedBy <https://katkatkateryna.github.io/ospd2026_bblocks-template/build/generateddocs/json-full/rss-hydro/mom/workflow/model-of-models/index.json> ],
+        [ dct:format "text/markdown" ;
+            rdfs:isDefinedBy <https://katkatkateryna.github.io/ospd2026_bblocks-template/build/generateddocs/markdown/rss-hydro/mom/workflow/model-of-models/index.md> ] ;
     dct:hasVersion "0.1" ;
-    dct:modified "2026-10-14"^^xsd:date ;
+    dct:modified "2026-11-19"^^xsd:date ;
     skos:inScheme <https://katkatkateryna.github.io/ospd2026_bblocks-template/> ;
     skos:prefLabel "Model of Models workflow" ;
     skos:topConceptOf <https://katkatkateryna.github.io/ospd2026_bblocks-template/> ;
@@ -103,7 +103,15 @@
         "flood",
         "hydrology",
         "watershed" ;
-    prof:hasResource [ dct:conformsTo shacl: ;
+    prof:hasResource [ dct:conformsTo <https://json-schema.org/draft/2020-12/schema> ;
+            dct:format "application/yaml" ;
+            prof:hasArtifact <https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/workflow/model-of-models/schema.yaml> ;
+            prof:hasRole role:schema ],
+        [ dct:conformsTo <https://www.w3.org/TR/json-ld11/> ;
+            dct:format "application/ld+json" ;
+            prof:hasArtifact <https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/workflow/model-of-models/context.jsonld> ;
+            prof:hasRole role:mapping ],
+        [ dct:conformsTo shacl: ;
             dct:format "text/turtle" ;
             rdfs:seeAlso <bblocks://lu.rss-hydro.mom.workflow.model-of-models> ;
             prof:hasArtifact <https://katkatkateryna.github.io/ospd2026_bblocks-template/_sources/workflow/model-of-models/rules.shacl> ;
@@ -113,14 +121,6 @@
             rdfs:seeAlso <bblocks://ogc.model.cross-domain.prov> ;
             prof:hasArtifact <https://ogcincubator.github.io/cross-domain-model/_sources/prov/shapes.shacl> ;
             prof:hasRole role:validation ],
-        [ dct:conformsTo <https://www.w3.org/TR/json-ld11/> ;
-            dct:format "application/ld+json" ;
-            prof:hasArtifact <https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/workflow/model-of-models/context.jsonld> ;
-            prof:hasRole role:mapping ],
-        [ dct:conformsTo <https://json-schema.org/draft/2020-12/schema> ;
-            dct:format "application/yaml" ;
-            prof:hasArtifact <https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/workflow/model-of-models/schema.yaml> ;
-            prof:hasRole role:schema ],
         [ dct:conformsTo <https://json-schema.org/draft/2020-12/schema> ;
             dct:format "application/json" ;
             prof:hasArtifact <https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/workflow/model-of-models/schema.json> ;
@@ -140,14 +140,14 @@
     rdfs:label "Processing activity provenance" ;
     dct:abstract "Generic W3C PROV profile of one geospatial processing activity."^^<https://www.w3.org/ns/iana/media-types/text/markdown> ;
     dct:created "2026-10-14T00:00:00+00:00"^^xsd:dateTime ;
-    dct:description [ dct:format "text/markdown" ;
-            rdfs:isDefinedBy <https://katkatkateryna.github.io/ospd2026_bblocks-template/build/generateddocs/markdown/rss-hydro/mom/processing-activity/index.md> ],
-        [ dct:format "application/json" ;
+    dct:description [ dct:format "application/json" ;
             rdfs:isDefinedBy <https://katkatkateryna.github.io/ospd2026_bblocks-template/build/generateddocs/json-full/rss-hydro/mom/processing-activity/index.json> ],
         [ dct:format "text/html" ;
-            rdfs:isDefinedBy <https://katkatkateryna.github.io/ospd2026_bblocks-template/bblock/lu.rss-hydro.mom.processing-activity> ] ;
+            rdfs:isDefinedBy <https://katkatkateryna.github.io/ospd2026_bblocks-template/bblock/lu.rss-hydro.mom.processing-activity> ],
+        [ dct:format "text/markdown" ;
+            rdfs:isDefinedBy <https://katkatkateryna.github.io/ospd2026_bblocks-template/build/generateddocs/markdown/rss-hydro/mom/processing-activity/index.md> ] ;
     dct:hasVersion "0.1" ;
-    dct:modified "2026-10-14"^^xsd:date ;
+    dct:modified "2026-11-19"^^xsd:date ;
     skos:inScheme <https://katkatkateryna.github.io/ospd2026_bblocks-template/> ;
     skos:prefLabel "Processing activity provenance" ;
     skos:topConceptOf <https://katkatkateryna.github.io/ospd2026_bblocks-template/> ;
@@ -158,19 +158,19 @@
             dct:format "application/json" ;
             prof:hasArtifact <https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/processing-activity/schema.json> ;
             prof:hasRole role:schema ],
-        [ dct:conformsTo <https://www.w3.org/TR/json-ld11/> ;
-            dct:format "application/ld+json" ;
-            prof:hasArtifact <https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/processing-activity/context.jsonld> ;
-            prof:hasRole role:mapping ],
+        [ dct:conformsTo <https://json-schema.org/draft/2020-12/schema> ;
+            dct:format "application/yaml" ;
+            prof:hasArtifact <https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/processing-activity/schema.yaml> ;
+            prof:hasRole role:schema ],
         [ dct:conformsTo shacl: ;
             dct:format "text/turtle" ;
             rdfs:seeAlso <bblocks://ogc.model.cross-domain.prov> ;
             prof:hasArtifact <https://ogcincubator.github.io/cross-domain-model/_sources/prov/shapes.shacl> ;
             prof:hasRole role:validation ],
-        [ dct:conformsTo <https://json-schema.org/draft/2020-12/schema> ;
-            dct:format "application/yaml" ;
-            prof:hasArtifact <https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/processing-activity/schema.yaml> ;
-            prof:hasRole role:schema ] ;
+        [ dct:conformsTo <https://www.w3.org/TR/json-ld11/> ;
+            dct:format "application/ld+json" ;
+            prof:hasArtifact <https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/processing-activity/context.jsonld> ;
+            prof:hasRole role:mapping ] ;
     bblocks:dependsOn <bblocks://ogc.ogc-utils.prov-activity> ;
     bblocks:hasSourceJsonLdContext <https://katkatkateryna.github.io/ospd2026_bblocks-template/_sources/processing-activity/context.jsonld> ;
     bblocks:scope <http://www.opengis.net/def/bblocks/scope/dev> ;
@@ -185,10 +185,10 @@
 profiled for the OGC Open Science Persistent Demonstrator (OSPD) 2026.
 """^^<https://www.w3.org/ns/iana/media-types/text/markdown> ;
     dct:description """W3C PROV profile and activity vocabulary for a minimal slice of the MoM workflow:
-GFMS per-watershed cell attribution, GFMS per-watershed aggregation, and GloFAS + GFMS
-hazard score accumulation.
+GFMS per-watershed aggregation, GloFAS + GFMS hazard score accumulation, and the final
+alert from the hazard scores of all sources.
 """^^<https://www.w3.org/ns/iana/media-types/text/markdown> ;
-    dct:modified "2026-10-14T17:32:05.227568"^^xsd:dateTime ;
+    dct:modified "2026-11-19T01:56:00.447972"^^xsd:dateTime ;
     owl:imports <https://ogcincubator.github.io/bblock-prov-schema/build/register.json>,
         <https://opengeospatial.github.io/bblocks/register.json> ;
     skos:hasTopConcept <bblocks://lu.rss-hydro.mom.ontology.activities>,
@@ -197,22 +197,22 @@ hazard score accumulation.
     skos:prefLabel "Building Blocks - RSS-Hydro Model of Models Building Blocks" ;
     prof:hasResource [ rdfs:label "This Building Blocks Register in JSON-LD format" ;
             dct:type "application/ld+json" ;
-            ns2:relation <http://www.iana.org/assignments/relation/self> ;
-            ns1:hasTarget <https://katkatkateryna.github.io/ospd2026_bblocks-template/build/bblocks.jsonld> ],
-        [ rdfs:label "This Building Blocks Register in RDF Turtle format" ;
-            dct:type "text/turtle" ;
-            ns2:relation <http://www.iana.org/assignments/relation/self> ;
-            ns1:hasTarget <https://katkatkateryna.github.io/ospd2026_bblocks-template/build/bblocks.ttl> ],
+            ns1:relation <http://www.iana.org/assignments/relation/self> ;
+            ns2:hasTarget <https://katkatkateryna.github.io/ospd2026_bblocks-template/build/bblocks.jsonld> ],
         [ rdfs:label "This Building Blocks Register in JSON format" ;
             dct:type "application/json" ;
-            ns2:relation <http://www.iana.org/assignments/relation/self> ;
-            ns1:hasTarget <https://katkatkateryna.github.io/ospd2026_bblocks-template/build/register.json> ] ;
+            ns1:relation <http://www.iana.org/assignments/relation/self> ;
+            ns2:hasTarget <https://katkatkateryna.github.io/ospd2026_bblocks-template/build/register.json> ],
+        [ rdfs:label "This Building Blocks Register in RDF Turtle format" ;
+            dct:type "text/turtle" ;
+            ns1:relation <http://www.iana.org/assignments/relation/self> ;
+            ns2:hasTarget <https://katkatkateryna.github.io/ospd2026_bblocks-template/build/bblocks.ttl> ] ;
     foaf:homepage <https://katkatkateryna.github.io/ospd2026_bblocks-template/> ;
     bblocks:hasValidationReport <https://katkatkateryna.github.io/ospd2026_bblocks-template/build/tests/report.html> .
 
-_:N9049e991155e4d12bfe7d2c7d2f6b938 a prov:Agent,
+_:N739a49aff46b416d8e96a3952dc3172f a prov:Agent,
         schema:SoftwareApplication ;
     rdfs:label "OGC-NA tools" ;
-    dct:hasVersion "0.5.36" ;
+    dct:hasVersion "0.6.0" ;
     rdfs:seeAlso <https://github.com/opengeospatial/ogc-na-tools> .
 

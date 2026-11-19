@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "description": "Provenance chain of one MoM run. Per-watershed aggregation and hazard score accumulation are always present; cell attribution only when the cell lookup is (re)built in the same run.",
+  "description": "Provenance chain of one MoM run: per-watershed aggregation, hazard score accumulation and final alert, each always present.",
   "allOf": [
     {
       "$ref": "https://ogcincubator.github.io/bblock-prov-schema/build/annotated/ogc-utils/prov/schema.json"
@@ -9,7 +9,7 @@
   "contains": {
     "$ref": "#/$defs/isProcessingActivity"
   },
-  "minContains": 2,
+  "minContains": 3,
   "items": {
     "allOf": [
       {
@@ -65,13 +65,13 @@
       },
       {
         "if": {
-          "$ref": "#/$defs/isCellLookup"
+          "$ref": "#/$defs/isHazardScore"
         },
         "then": {
           "required": [
-            "mom:watershedFingerprint",
+            "mom:dataType",
+            "mom:dataTime",
             "generatedAtTime",
-            "wasGeneratedBy",
             "wasDerivedFrom"
           ]
         }
@@ -93,9 +93,6 @@
               ]
             },
             {
-              "$ref": "#/$defs/isCellLookup"
-            },
-            {
               "required": [
                 "generatedAtTime",
                 "mom:dataTime"
@@ -110,13 +107,13 @@
     "isProcessingActivity": {
       "$ref": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/annotated/rss-hydro/mom/ontology/activities/schema.json#/$defs/isMomActivity"
     },
-    "isCellLookup": {
+    "isHazardScore": {
       "required": [
         "entityType"
       ],
       "properties": {
         "entityType": {
-          "const": "mom:WatershedCellLookup"
+          "const": "mom:HazardScore"
         }
       }
     }
@@ -138,5 +135,11 @@
     "run": "https://example.org/mom/run/2026030200/",
     "dcat": "http://www.w3.org/ns/dcat#",
     "dcterms": "http://purl.org/dc/terms/"
+  },
+  "x-bblocks-metadata": {
+    "itemIdentifier": "lu.rss-hydro.mom.workflow.model-of-models",
+    "register": "https://katkatkateryna.github.io/ospd2026_bblocks-template/build/register.json",
+    "version": "0.1",
+    "dateOfLastChange": "2026-10-14"
   }
 }
